@@ -245,6 +245,52 @@ void GUI::DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo) const
 
 }
 
+void GUI::DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const
+{
+	color DrawingClr;
+	if (RectGfxInfo.isSelected)	//shape is selected
+		DrawingClr = HighlightColor; //shape should be drawn highlighted
+	else
+		DrawingClr = RectGfxInfo.DrawClr;
+
+	pWind->SetPen(DrawingClr, RectGfxInfo.BorderWdth);	//Set Drawing color & width
+
+	drawstyle style;
+	if (RectGfxInfo.isFilled)
+	{
+		style = FILLED;
+		pWind->SetBrush(RectGfxInfo.FillClr);
+	}
+	else
+		style = FRAME;
+
+	pWind->DrawCircle(P1.x, P1.y, sqrt(pow(P1.x-P2.x,2)+pow(P1.y-P2.y,2)), style);
+
+}
+
+void GUI::DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const
+{
+	color DrawingClr;
+	if (RectGfxInfo.isSelected)	//shape is selected
+		DrawingClr = HighlightColor; //shape should be drawn highlighted
+	else
+		DrawingClr = RectGfxInfo.DrawClr;
+
+	pWind->SetPen(DrawingClr, RectGfxInfo.BorderWdth);	//Set Drawing color & width
+
+	drawstyle style;
+	if (RectGfxInfo.isFilled)
+	{
+		style = FILLED;
+		pWind->SetBrush(RectGfxInfo.FillClr);
+	}
+	else
+		style = FRAME;
+
+	pWind->DrawRectangle(P1.x, P1.y, P2.x, P2.y, style);
+
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 GUI::~GUI()

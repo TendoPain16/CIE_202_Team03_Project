@@ -22,42 +22,42 @@ struct GfxInfo	//Graphical info common for all shapes (you may add more members)
 	bool isSelected;	//true if the shape is selected.
 };
 
+enum GUI_MODE	//Graphical user interface mode
+{
+	MODE_DRAW,	//Drawing mode (startup mode)
+	MODE_PLAY	//Playing mode
+};
 
+enum DrawMenuIcon //The icons of the Draw menu (you should add more icons)
+{
+	//Note: Icons are ordered here as they appear in menu
+	//If you want to change the menu icons order, change the order here
+	ICON_RECT,		//Recangle icon in menu
+	ICON_CIRC,		//Circle icon in menu
+
+	//TODO: Add more icons names here
+
+	ICON_EXIT,		//Exit icon
+
+	DRAW_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
+
+};
+
+enum PlayMenuIcon //The icons of the Play menu (you should add more icons)
+{
+	//Note: Icons are ordered here as they appear in menu
+	//If you want to change the menu icons order, change the order here
+
+	//TODO: Add more icons names here
+
+	PLAY_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
+
+};
 
 
 class GUI
 {
-	enum GUI_MODE	//Graphical user interface mode
-	{
-		MODE_DRAW,	//Drawing mode (startup mode)
-		MODE_PLAY	//Playing mode
-	};
 
-	enum DrawMenuIcon //The icons of the Draw menu (you should add more icons)
-	{
-		//Note: Icons are ordered here as they appear in menu
-		//If you want to change the menu icons order, change the order here
-		ICON_RECT,		//Recangle icon in menu
-		ICON_CIRC,		//Circle icon in menu
-
-		//TODO: Add more icons names here
-
-		ICON_EXIT,		//Exit icon
-
-		DRAW_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
-
-	};
-
-	enum PlayMenuIcon //The icons of the Play menu (you should add more icons)
-	{
-		//Note: Icons are ordered here as they appear in menu
-		//If you want to change the menu icons order, change the order here
-
-		//TODO: Add more icons names here
-
-		PLAY_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
-
-	};
 
 
 	GUI_MODE InterfaceMode;
@@ -103,6 +103,9 @@ public:
 
 	// -- shapes Drawing functions
 	void DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
+	void DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
+	void DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
+
 
 	///Make similar functions for drawing all other shapes.
 
