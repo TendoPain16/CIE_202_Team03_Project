@@ -20,6 +20,7 @@ struct GfxInfo	//Graphical info common for all shapes (you may add more members)
 	bool isFilled;	//shape Filled or not
 	int BorderWdth;	//Width of shape borders
 	bool isSelected;	//true if the shape is selected.
+	string image;
 };
 
 enum GUI_MODE	//Graphical user interface mode
@@ -89,7 +90,7 @@ public:
 
 	// Input Functions  ---------------------------
 	void GetPointClicked(int& x, int& y) const;//Get coordinate where user clicks
-	string GetSrting() const;	 //Returns a string entered by the user
+	string GetSrting(string type) const;	 //Returns a string entered by the user
 	operationType GetUseroperation() const; //Read the user click and map to an operation
 
 	// Output Functions  ---------------------------
@@ -100,21 +101,25 @@ public:
 
 	void ClearStatusBar() const;	//Clears the status bar
 	void ClearDrawArea() const;	//Clears the drawing area
+	color GetColor() const;
 
 	// -- shapes Drawing functions
 	void DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
 	void DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
 	void DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
-
+	void DrawLine(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
 
 	///Make similar functions for drawing all other shapes.
 
 	void PrintMessage(string msg) const;	//Print a message on Status bar
 
-	color getCrntDrawColor() const;	//get current drwawing color
-	color getCrntFillColor() const;	//get current filling color
+	color getCrntDrawColor() const;		//get current drwawing color
+	color getCrntFillColor() const;		//get current filling color
 	int getCrntPenWidth() const;		//get current pen width
-
+	GUI_MODE GetCrntMode() const;		//grt current mode
+	void SetCrntMode(GUI_MODE x);		//set current mode
+	void SetCrntDrawColor(color x);		//set current draw color
+	
 
 	~GUI();
 };

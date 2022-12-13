@@ -2,6 +2,12 @@
 #include "operations\opAddRect.h"
 #include "operations\opAddCircle.h"
 #include "operations\opAddSquare.h"
+#include "operations\opAddLine.h"
+#include "operations\opChngDrawClr.h"
+#include "operations\opToPlay.h"
+#include "operations\opToDraw.h"
+#include "operations\opSave.h"
+#include "operations\opLoad.h"
 
 
 //Constructor
@@ -33,18 +39,14 @@ operation* controller::createOperation(operationType OpType)
 		break;
 
 	case DRAW_LINE:
-		//pOp = new opAddLine(this);
+		pOp = new opAddLine(this);
 		break;
 
 	case DRAW_IRREGPOL:
 		//pOp = new opAddIrregularPolygon(this);
 		break;
 
-	case DRAW_REGPOL:
-		//pOp = new opAddRegularPolygon(this);
-		break;
-
-	case DRAW_TRI:
+	case DRAW_TRIA:
 		//pOp = new opAddTriangle(this);
 		break;
 
@@ -54,6 +56,26 @@ operation* controller::createOperation(operationType OpType)
 
 	case DRAW_SQUA:
 		pOp = new opAddSquare(this);
+		break;
+
+	case CHNG_DRAW_CLR:
+		pOp = new opChngDrawClr(this);
+		break;
+
+	case TO_PLAY:
+		pOp = new opToPlay(this);
+		break;
+
+	case TO_DRAW:
+		pOp = new opToDraw(this);
+		break;
+
+	case SAVE:
+		pOp = new opSave(this);
+		break;
+
+	case LOAD:
+		pOp = new opLoad(this);
 		break;
 
 	case EXIT:
@@ -78,9 +100,25 @@ void controller::UpdateInterface() const
 	pGraph->Draw(pGUI);
 }
 ////////////////////////////////////////////////////////////////////////////////////
+//Save all shapes on the user interface
+void controller::Save(ofstream& file) const
+{
+	pGraph->Save(file);
+}
+
+//Load all shapes to the user interface
+void controller::Load(ifstream& file)
+{
+	pGraph->Load(file,pGUI);
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the UI
 GUI *controller::GetUI() const
 {	return pGUI; }
+
+
 ////////////////////////////////////////////////////////////////////////////////////
 //Return a pointer to the Graph
 Graph* controller::getGraph() const

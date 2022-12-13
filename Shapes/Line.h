@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Shape.h"
+#include "shape.h"
 
 class Line : public shape
 {
@@ -8,7 +8,11 @@ private:
 	Point Corner1;
 	Point Corner2;
 public:
-	Line(Point, Point, GfxInfo ShapeGfxInfo);
+	Line();
+	Line(Point, Point, GfxInfo shapeGfxInfo);
 	virtual ~Line();
 	virtual void Draw(GUI* pUI) const;
+	virtual void Save(ofstream&) const;
+	virtual void Load(vector <string> line, GUI* pUI);
 };
+

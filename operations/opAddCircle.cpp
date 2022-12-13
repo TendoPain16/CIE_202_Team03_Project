@@ -18,7 +18,7 @@ void opAddCircle::Execute()
 	//Get a Pointer to the Input / Output Interfaces
 	GUI* pUI = pControl->GetUI();
 
-	pUI->PrintMessage("New CCircle: Click at the center.");
+	pUI->PrintMessage("New Circle: Click at the center.");
 	//Read the center and store in point P1
 	pUI->GetPointClicked(P1.x, P1.y);
 
@@ -36,19 +36,20 @@ void opAddCircle::Execute()
 	RectGfxInfo.DrawClr = pUI->getCrntDrawColor();
 	RectGfxInfo.FillClr = pUI->getCrntFillColor();
 	RectGfxInfo.BorderWdth = pUI->getCrntPenWidth();
+	RectGfxInfo.image = "Empty";
 
 
 	RectGfxInfo.isFilled = false;	//default is not filled
 	RectGfxInfo.isSelected = false;	//defualt is not selected
 
 
-	//Create a ccircle with the above parameters
+	//Create a circle with the above parameters
 	Circle* R = new Circle(P1, P2, RectGfxInfo);
 
 	//Get a pointer to the graph
 	Graph* pGr = pControl->getGraph();
 
-	//Add the rectangle to the list of shapes
+	//Add the circle to the list of shapes
 	pGr->Addshape(R);
 
 }

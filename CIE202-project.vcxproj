@@ -173,6 +173,11 @@
     <ClCompile Include="operations\opAddRegularPolygon.cpp" />
     <ClCompile Include="operations\opAddSquare.cpp" />
     <ClCompile Include="operations\opAddTriangle.cpp" />
+    <ClCompile Include="operations\opChngDrawClr.cpp" />
+    <ClCompile Include="operations\opLoad.cpp" />
+    <ClCompile Include="operations\opSave.cpp" />
+    <ClCompile Include="operations\opToDraw.cpp" />
+    <ClCompile Include="operations\opToPlay.cpp" />
     <ClCompile Include="Shapes\Circle.cpp" />
     <ClCompile Include="Shapes\Graph.cpp" />
     <ClCompile Include="Shapes\IrregularPolygon.cpp" />
@@ -214,7 +219,12 @@
     <ClInclude Include="operations\opAddRegularPolygon.h" />
     <ClInclude Include="operations\opAddSquare.h" />
     <ClInclude Include="operations\opAddTriangle.h" />
+    <ClInclude Include="operations\opChngDrawClr.h" />
     <ClInclude Include="operations\operation.h" />
+    <ClInclude Include="operations\opLoad.h" />
+    <ClInclude Include="operations\opSave.h" />
+    <ClInclude Include="operations\opToDraw.h" />
+    <ClInclude Include="operations\opToPlay.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Shapes\Circle.h" />
     <ClInclude Include="Shapes\Graph.h" />

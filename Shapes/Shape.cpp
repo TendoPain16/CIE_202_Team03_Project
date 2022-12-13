@@ -1,7 +1,20 @@
 #include "shape.h"
 
+shape::shape()
+{
+	GfxInfo temp;
+	temp.BorderWdth = 0;
+	temp.DrawClr = BLUE;
+	temp.FillClr = BLUE;
+	temp.image = "Empty";
+	temp.isFilled = false;
+	temp.isSelected = false;
+	ShpGfxInfo = temp;
+}
+
 shape::shape(GfxInfo shapeGfxInfo)
-{ 
+{
+	ID_gen++;
 	ShpGfxInfo = shapeGfxInfo;	//Default status is non-filled.
 }
  
@@ -20,3 +33,9 @@ void shape::ChngFillClr(color Fclr)
 	ShpGfxInfo.FillClr = Fclr; 
 }
 
+int shape::ID_gen = 0;
+
+int shape::Get_ID()
+{
+	return ID_gen;
+}

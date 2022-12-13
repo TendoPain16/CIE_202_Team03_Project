@@ -7,15 +7,19 @@ enum operationType //The operations supported (you can add more if needed)
 {
 	DRAW_LINE,		//Draw Line
 	DRAW_RECT,		//Draw Rectangle
-	DRAW_TRI,		//Draw Triangle
+	DRAW_TRIA,		//Draw Triangle
 	DRAW_CIRC,		//Draw Circle
 	DRAW_SQUA,		//Draw SQUA
 	DRAW_REGPOL,	//Draw REGPOL
 	DRAW_IRREGPOL,	//Draw IRREGPOL
 
+	STICK_IMG,		//stick image to the shape
+	CHNG_BORDER_WDTH,//change the  border width of shape
 	CHNG_DRAW_CLR,	//Change the drawing color
 	CHNG_FILL_CLR,	//Change the filling color
 	CHNG_BK_CLR,	//Change background color
+	UNDO,			//undo op
+	REDO,			//redo op
 	DEL,			//Delete a shape(s)
 	MOVE,			//Move a shape(s)
 	RESIZE,			//Resize a shape(s)
@@ -27,6 +31,7 @@ enum operationType //The operations supported (you can add more if needed)
 	EXIT,			//Exit the application
 
 	DRAWING_AREA,	//A click on the drawing area
+	PLAYING_AREA,	//A click on the playing area
 	STATUS,			//A click on the status bar
 	EMPTY,			//A click on empty place in the toolbar
 

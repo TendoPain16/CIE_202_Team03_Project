@@ -23,9 +23,9 @@ void opAddSquare::Execute()
 	pUI->GetPointClicked(P1.x, P1.y);
 
 	string msg = "First corner is at (" + to_string(P1.x) + ", " + to_string(P1.y) + " )";
-	msg += " ... Click at the lenght or hight you want";
+	msg += " ... Click at the lenght you want";
 	pUI->PrintMessage(msg);
-	//Read theh hight or length and store in point P2
+	//Read the length and store in point P2
 	pUI->GetPointClicked(P2.x, P2.y);
 	pUI->ClearStatusBar();
 
@@ -36,7 +36,7 @@ void opAddSquare::Execute()
 	RectGfxInfo.DrawClr = pUI->getCrntDrawColor();
 	RectGfxInfo.FillClr = pUI->getCrntFillColor();
 	RectGfxInfo.BorderWdth = pUI->getCrntPenWidth();
-
+	RectGfxInfo.image = "Empty";
 
 	RectGfxInfo.isFilled = false;	//default is not filled
 	RectGfxInfo.isSelected = false;	//defualt is not selected
@@ -48,7 +48,7 @@ void opAddSquare::Execute()
 	//Get a pointer to the graph
 	Graph* pGr = pControl->getGraph();
 
-	//Add the rectangle to the list of shapes
+	//Add the square to the list of shapes
 	pGr->Addshape(R);
 
 }

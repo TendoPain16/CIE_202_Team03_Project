@@ -29,6 +29,8 @@ public:
 	// -- Interface Management Functions
 	GUI *GetUI() const; //Return pointer to the UI
 	void UpdateInterface() const;	//Redraws all the drawing window	
+	void Save(ofstream&) const;				//Save all shapes on the user interface
+	void Load(ifstream&);				//Load all shapes to the user interface
 
 };
 

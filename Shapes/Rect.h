@@ -5,11 +5,14 @@
 class Rect : public shape
 {
 private:
-	Point Corner1;	
+	Point Corner1;
 	Point Corner2;
 public:
+	Rect();
 	Rect(Point , Point, GfxInfo shapeGfxInfo );
 	virtual ~Rect();
 	virtual void Draw(GUI* pUI) const;
+	virtual void Save(ofstream&) const;
+	virtual void Load(vector <string> line, GUI* pUI);
 };
 
