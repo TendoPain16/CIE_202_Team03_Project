@@ -4,7 +4,7 @@
 
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Defs.h"
-
+#include <vector>
 #include <string>
 using namespace std;
 
@@ -35,7 +35,17 @@ enum DrawMenuIcon //The icons of the Draw menu (you should add more icons)
 	//If you want to change the menu icons order, change the order here
 	ICON_RECT,		//Recangle icon in menu
 	ICON_CIRC,		//Circle icon in menu
-
+	ICON_SQUA,
+	ICON_TRIA,
+	ICON_IRREGPOL,
+	ICON_LINE,
+	ICON_DRAW_CLR,
+	ICON_FILL_CLR,
+	ICON_DEL,
+	ICON_RESIZE,
+	ICON_SAVE,
+	ICON_LOAD,
+	ICON_TO_PLAY,
 	//TODO: Add more icons names here
 
 	ICON_EXIT,		//Exit icon
@@ -105,11 +115,13 @@ public:
 
 	// -- shapes Drawing functions
 	void DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
-	void DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
-	void DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
-	void DrawLine(Point P1, Point P2, GfxInfo RectGfxInfo) const;  //Draw a rectangle
-
+	void DrawCircle(Point P1, Point P2, GfxInfo CircGfxInfo) const;  //Draw a circle
+	void DrawSquare(Point P1, Point P2, GfxInfo SquaGfxInfo) const;  //Draw a square
+	void DrawLine(Point P1, Point P2, GfxInfo LineGfxInfo) const;  //Draw a line
+	void DrawTriangle(Point P1, Point P2,Point P3, GfxInfo TriaGfxInfo) const;  //Draw a triangle
+	void DrawIrregularpolygon(vector <Point> Points, int V_number, GfxInfo IrregpolGfxInfo) const;  //Draw a irregularpolygon
 	///Make similar functions for drawing all other shapes.
+
 
 	void PrintMessage(string msg) const;	//Print a message on Status bar
 

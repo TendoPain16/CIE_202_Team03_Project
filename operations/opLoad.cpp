@@ -13,7 +13,7 @@ opLoad::~opLoad()
 void opLoad::Execute()
 {
 	GUI* pUI = pControl->GetUI();
-	string name = pUI->GetSrting("name");
+	string name = pUI->GetSrting("Please enter the file name: ");
 	ifstream info;
 	info.open(name + ".txt");
 	pControl->Load(info);

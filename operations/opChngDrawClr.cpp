@@ -1,20 +1,19 @@
 #include "opChngDrawClr.h"
-
 #include "..\controller.h"
-
 #include "..\GUI\GUI.h"
+
 
 opChngDrawClr::opChngDrawClr(controller* pCont) :operation(pCont)
 {}
+
+
 opChngDrawClr::~opChngDrawClr()
 {}
 
-//Execute the operation
-void opChngDrawClr::Execute()
-{
 
-	//Get a Pointer to the Input / Output Interfaces
-	GUI* pUI = pControl->GetUI();
+void opChngDrawClr::Execute()		//Execute the operation
+{
+	GUI* pUI = pControl->GetUI();		//Get a Pointer to the Input / Output Interfaces
 
 	pUI->ClearStatusBar();
 
@@ -25,5 +24,4 @@ void opChngDrawClr::Execute()
 	pUI->PrintMessage("color has been selected");
 
 	pUI->SetCrntDrawColor(temp);
-
 }

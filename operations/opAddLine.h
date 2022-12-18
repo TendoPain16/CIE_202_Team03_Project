@@ -1,16 +1,13 @@
 #pragma once
-
 #include "operation.h"
 
-//Add line operation class
-class opAddLine : public operation
+
+class opAddLine : public operation		//Add line operation class
 {
 public:
 	opAddLine(controller* pCont);
 	virtual ~opAddLine();
 
-	//Add line to the controller
-	virtual void Execute();
-
+	virtual void Execute();		//Add line to the controller
 };
 

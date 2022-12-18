@@ -3,6 +3,8 @@
 #include "operations\opAddCircle.h"
 #include "operations\opAddSquare.h"
 #include "operations\opAddLine.h"
+#include "operations\opAddTriangle.h"
+#include "operations\opAddIrregularPolygon.h"
 #include "operations\opChngDrawClr.h"
 #include "operations\opToPlay.h"
 #include "operations\opToDraw.h"
@@ -10,29 +12,33 @@
 #include "operations\opLoad.h"
 
 
-//Constructor
+
+//==================================================================================//
+//									Constructor										//
+//==================================================================================//
 controller::controller()
 {
 	pGraph = new Graph;
-	pGUI = new GUI;	//Create GUI object
+	pGUI = new GUI;			//Create GUI object
 }
 
+
+
 //==================================================================================//
-//								operations-Related Functions							//
+//							operations-Related Functions							//
 //==================================================================================//
-operationType controller::GetUseroperation() const
+operationType controller::GetUseroperation() const		//Ask the input to get the operation from the user.
 {
-	//Ask the input to get the operation from the user.
 	return pGUI->GetUseroperation();		
 }
-////////////////////////////////////////////////////////////////////////////////////
-//Creates an operation and executes it
-operation* controller::createOperation(operationType OpType)
+
+
+operation* controller::createOperation(operationType OpType)	//Creates an operation and executes it
 {
 	operation* pOp = nullptr;
 	
-	//According to operation Type, create the corresponding operation object
-	switch (OpType)
+	switch (OpType)		//According to operation Type, create the corresponding operation object
+
 	{
 	case DRAW_RECT:
 		pOp = new opAddRect(this);
@@ -43,11 +49,11 @@ operation* controller::createOperation(operationType OpType)
 		break;
 
 	case DRAW_IRREGPOL:
-		//pOp = new opAddIrregularPolygon(this);
+		pOp = new opAddIrregularPolygon(this);
 		break;
 
 	case DRAW_TRIA:
-		//pOp = new opAddTriangle(this);
+		pOp = new opAddTriangle(this);
 		break;
 
 	case DRAW_CIRC:
@@ -88,53 +94,40 @@ operation* controller::createOperation(operationType OpType)
 	}
 
 	return pOp;
-	
 }
+
+
+
 //==================================================================================//
 //							Interface Management Functions							//
 //==================================================================================//
 
-//Draw all shapes on the user interface
-void controller::UpdateInterface() const
+void controller::UpdateInterface() const		//Draw all shapes on the user interface
 {	
 	pGraph->Draw(pGUI);
 }
-////////////////////////////////////////////////////////////////////////////////////
-//Save all shapes on the user interface
-void controller::Save(ofstream& file) const
+
+
+void controller::Save(ofstream& file) const		//Save all shapes on the user interface
 {
 	pGraph->Save(file);
 }
 
-//Load all shapes to the user interface
-void controller::Load(ifstream& file)
+void controller::Load(ifstream& file)			//Load all shapes to the user interface
 {
 	pGraph->Load(file,pGUI);
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////
-//Return a pointer to the UI
-GUI *controller::GetUI() const
-{	return pGUI; }
 
+//==================================================================================//
+//									get pointers									//
+//==================================================================================//
+GUI *controller::GetUI() const			//Return a pointer to the UI
+{	return pGUI;}
 
-////////////////////////////////////////////////////////////////////////////////////
-//Return a pointer to the Graph
-Graph* controller::getGraph() const
-{
-	return pGraph;
-}
-
-
-
-//Destructor
-controller::~controller()
-{
-	delete pGUI;
-	delete pGraph;
-	
-}
+Graph* controller::getGraph() const		//Return a pointer to the Graph
+{	return pGraph;}
 
 
 
@@ -146,23 +139,28 @@ void controller::Run()
 	operationType OpType;
 	do
 	{
-		//1. Ask the GUI to read the required operation from the user
-		OpType = GetUseroperation();
+		OpType = GetUseroperation();					//1. Ask the GUI to read the required operation from the user
 
-		//2. Create an operation coresspondingly
-		operation* pOpr = createOperation(OpType);
+		operation* pOpr = createOperation(OpType);		//2. Create an operation coresspondingly
 		 
-		//3. Execute the created operation
-		if (pOpr)
-		{
-			pOpr->Execute();//Execute
-			delete pOpr;	//operation is not needed any more ==> delete it
+		if (pOpr) {										//3. Execute the created operation
+			pOpr->Execute();
+			delete pOpr;
 			pOpr = nullptr;
 		}
-
-		//Update the interface
-		UpdateInterface();
+		
+		UpdateInterface();								//4. Update the interface
 
 	} while (OpType != EXIT);
 
+}
+
+
+
+//==================================================================================//
+//									Detructor										//
+//==================================================================================//
+controller::~controller()
+{
+	delete pGUI; delete pGraph;
 }

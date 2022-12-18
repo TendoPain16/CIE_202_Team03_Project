@@ -1,16 +1,13 @@
 #pragma once
-
 #include "operation.h"
 
-//Add Square operation class
-class opAddSquare : public operation
+
+class opAddSquare : public operation		//Add Square operation class
 {
 public:
 	opAddSquare(controller* pCont);
 	virtual ~opAddSquare();
 
-	//Add square to the controller
-	virtual void Execute();
-
+	virtual void Execute();		//Add square to the controller
 };
 

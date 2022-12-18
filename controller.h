@@ -10,8 +10,8 @@ class operation; //forward declaration
 class controller
 {
 
-	Graph* pGraph;	//pointe to the grapg
-	GUI* pGUI;		//Pointer to UI class
+	Graph* pGraph;								//pointe to the grapg
+	GUI* pGUI;									//Pointer to UI class
 	
 
 public:	
@@ -19,18 +19,18 @@ public:
 	~controller();
 	
 	// -- operation-Related Functions
-	//Reads the input command from the user and returns the corresponding operation type
-	operationType GetUseroperation() const;
+	operationType GetUseroperation() const;		//Reads the input command from the user and returns the corresponding operation type
 	operation* createOperation(operationType) ; //Creates an operation
 	void Run();
 	
-	Graph* getGraph() const;
+	
 	
 	// -- Interface Management Functions
-	GUI *GetUI() const; //Return pointer to the UI
-	void UpdateInterface() const;	//Redraws all the drawing window	
-	void Save(ofstream&) const;				//Save all shapes on the user interface
-	void Load(ifstream&);				//Load all shapes to the user interface
+	Graph* getGraph() const;					//Return pointer to the graph
+	GUI *GetUI() const;							//Return pointer to the UI
+	void UpdateInterface() const;				//Redraws all the drawing window	
+	void Save(ofstream&) const;					//Save all shapes on the user interface
+	void Load(ifstream&);						//Load all shapes to the user interface
 
 };
 

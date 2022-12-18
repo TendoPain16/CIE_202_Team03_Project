@@ -1,16 +1,13 @@
 #pragma once
-
 #include "operation.h"
 
-//Add Circle operation class
-class opAddCircle : public operation
+
+class opAddCircle : public operation	//Add Circle operation class
 {
 public:
 	opAddCircle(controller* pCont);
 	virtual ~opAddCircle();
 
-	//Add circle to the controller
-	virtual void Execute();
-
+	virtual void Execute();		//Add circle to the controller
 };
 

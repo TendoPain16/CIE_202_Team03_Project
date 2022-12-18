@@ -13,7 +13,7 @@ opSave::~opSave()
 void opSave::Execute()
 {
 	GUI* pUI = pControl->GetUI();
-	string name = pUI->GetSrting("name");
+	string name = pUI->GetSrting("Please enter the file name: ");
 	ofstream info;
 	info.open(name + ".txt");
 	pControl->Save(info);

@@ -1,53 +1,43 @@
 #include "opAddRect.h"
 #include "..\shapes\Rect.h"
-
 #include "..\controller.h"
-
 #include "..\GUI\GUI.h"
+
 
 opAddRect::opAddRect(controller * pCont):operation(pCont)
 {}
+
+
 opAddRect::~opAddRect()
 {} 
 
-//Execute the operation
-void opAddRect::Execute() 
+
+void opAddRect::Execute()	 //Execute the operation
 {
 	Point P1, P2;
 
-	//Get a Pointer to the Input / Output Interfaces
-	GUI* pUI = pControl->GetUI();
+	GUI* pUI = pControl->GetUI();		//Get a Pointer to the Input / Output Interfaces
 
 	pUI->PrintMessage("New Rectangle: Click at first corner");
-	//Read 1st corner and store in point P1
-	pUI->GetPointClicked(P1.x, P1.y);
+	pUI->GetPointClicked(P1.x, P1.y);	//Read 1st corner and store in point P1
 
-	string msg = "First corner is at (" + to_string(P1.x) + ", " + to_string(P1.y) + " )";
-	msg += " ... Click at second corner";
-	pUI->PrintMessage(msg);
-	//Read 2nd corner and store in point P2
-	pUI->GetPointClicked(P2.x, P2.y);
+	pUI->PrintMessage("First corner is at (" + to_string(P1.x) + ", " + to_string(P1.y) + " )" + " ... Click at second corner");
+	pUI->GetPointClicked(P2.x, P2.y);	//Read 2nd corner and store in point P2
+
 	pUI->ClearStatusBar();
 
 	//Preapre all rectangle parameters
 	GfxInfo RectGfxInfo;
-	
-	//get drawing, filling colors and pen width from the interface
 	RectGfxInfo.DrawClr = pUI->getCrntDrawColor();
 	RectGfxInfo.FillClr = pUI->getCrntFillColor();
 	RectGfxInfo.BorderWdth = pUI->getCrntPenWidth();
 	RectGfxInfo.image = "Empty";
-	RectGfxInfo.isFilled = false;	//default is not filled
-	RectGfxInfo.isSelected = false;	//defualt is not selected
+	RectGfxInfo.isFilled = false;
+	RectGfxInfo.isSelected = false;
 
+	Rect *R=new Rect(P1, P2, RectGfxInfo);	//Create a rectangle with the above parameters
 
-	//Create a rectangle with the above parameters
-	Rect *R=new Rect(P1, P2, RectGfxInfo);
+	Graph* pGr = pControl->getGraph();		//Get a pointer to the graph
 
-	//Get a pointer to the graph
-	Graph* pGr = pControl->getGraph();
-
-	//Add the rectangle to the list of shapes
-	pGr->Addshape(R);
-
+	pGr->Addshape(R);						//Add the rectangle to the list of shapes
 }

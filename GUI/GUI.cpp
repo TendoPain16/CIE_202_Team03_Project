@@ -44,7 +44,7 @@ void GUI::GetPointClicked(int& x, int& y) const
 	pWind->WaitMouseClick(x, y);	//Wait for mouse click
 }
 
-string GUI::GetSrting(string type) const
+string GUI::GetSrting(string message) const
 {
 	string Label = "";
 	char Key;
@@ -52,10 +52,8 @@ string GUI::GetSrting(string type) const
 	pWind->FlushKeyQueue();
 	while (1)
 	{
-		if (type == "name")
-			PrintMessage("Please Enter the name: " + Label);
-		else
-			PrintMessage("Please Enter the number: " + Label);
+
+		PrintMessage(message + Label);
 
 		ktype = pWind->WaitKeyPress(Key);
 		if (ktype == ESCAPE)	//ESCAPE key is pressed
@@ -100,26 +98,20 @@ operationType GUI::GetUseroperation() const
 
 			switch (ClickedIconOrder)
 			{
-			case ICON_RECT:					return DRAW_RECT;
-			case ICON_CIRC:					return DRAW_CIRC;
-			case 2/*ICON_SQUA*/:			return DRAW_SQUA;
-			case 3/*ICON_TRIA*/:			return DRAW_TRIA;
-			case 4/*ICON_IRREGPOL*/:		return DRAW_IRREGPOL;
-			case 5/*ICON_LINE*/:			return DRAW_LINE;
-			case 6/*ICON_DRAW_CLR*/:		return CHNG_DRAW_CLR;
-			case 7/*ICON_FILL_CLR*/:		return CHNG_FILL_CLR;
-			case 8/*ICON_DEL*/:				return DEL;
-			case 9/*ICON_RESIZE*/:			return RESIZE;
-			case 10/*ICON*/:				return EMPTY;
-			case 11/*ICON*/:				return EMPTY;
-			case 12/*ICON*/:				return EMPTY;
-			case 13/*ICON*/:				return EMPTY;
-			case 14/*ICON*/:				return EMPTY;
-			case 15/*ICON*/:				return EMPTY;
-			case 16/*ICON*/:				return SAVE;
-			case 17/*ICON_LOAD*/:			return LOAD;
-			case 18/*ICON_TO_PLAY*/:		return TO_PLAY;
-			case 19/*ICON_EXIT*/:			return EXIT;
+			case ICON_RECT:				return DRAW_RECT;
+			case ICON_CIRC:				return DRAW_CIRC;
+			case ICON_SQUA:				return DRAW_SQUA;
+			case ICON_TRIA:				return DRAW_TRIA;
+			case ICON_IRREGPOL:			return DRAW_IRREGPOL;
+			case ICON_LINE:				return DRAW_LINE;
+			case ICON_DRAW_CLR:			return CHNG_DRAW_CLR;
+			case ICON_FILL_CLR:			return CHNG_FILL_CLR;
+			case ICON_DEL:				return DEL;
+			case ICON_RESIZE:			return RESIZE;
+			case ICON_SAVE:				return SAVE;
+			case ICON_LOAD:				return LOAD;
+			case ICON_TO_PLAY:			return TO_PLAY;
+			case ICON_EXIT:				return EXIT;
 
 			default: return EMPTY;	//A click on empty place in desgin toolbar
 			}
@@ -226,10 +218,20 @@ void GUI::CreateDrawToolBar()
 	//To control the order of these images in the menu, 
 	//reoder them in UI_Info.h ==> enum DrawMenuIcon
 	string MenuIconImages[DRAW_ICON_COUNT];
-	MenuIconImages[ICON_RECT] = "images\\MenuIcons\\Menu_Rect.jpg";
-	MenuIconImages[ICON_CIRC] = "images\\MenuIcons\\Menu_Circ.jpg";
-	MenuIconImages[ICON_EXIT] = "images\\MenuIcons\\Menu_Exit.jpg";
-
+	MenuIconImages[ICON_RECT]		= "images\\MenuIcons\\Menu_Rect.jpg";
+	MenuIconImages[ICON_CIRC]		= "images\\MenuIcons\\Menu_Circ.jpg";
+	MenuIconImages[ICON_SQUA]		= "images\\MenuIcons\\Menu_Square.jpg";
+	MenuIconImages[ICON_TRIA]		= "images\\MenuIcons\\Menu_Triangle.jpg";
+	MenuIconImages[ICON_IRREGPOL]	= "images\\MenuIcons\\Menu_IrregularPolygon.jpg";
+	MenuIconImages[ICON_LINE]		= "images\\MenuIcons\\Menu_Line.jpg";
+	MenuIconImages[ICON_DRAW_CLR]	= "images\\MenuIcons\\Menu_Pen.jpg";
+	MenuIconImages[ICON_FILL_CLR]	= "images\\MenuIcons\\Menu_Fill.jpg";
+	MenuIconImages[ICON_DEL]		= "images\\MenuIcons\\Menu_Delete.jpg";
+	MenuIconImages[ICON_RESIZE]		= "images\\MenuIcons\\Menu_Resize.jpg";
+	MenuIconImages[ICON_SAVE]		= "images\\MenuIcons\\Menu_Save.jpg";
+	MenuIconImages[ICON_LOAD]		= "images\\MenuIcons\\Menu_Load.jpg";
+	MenuIconImages[ICON_TO_PLAY]	= "images\\MenuIcons\\Menu_Play.jpg";
+	MenuIconImages[ICON_EXIT]		= "images\\MenuIcons\\Menu_Exit.jpg";
 	//TODO: Prepare images for each menu icon and add it to the list
 
 	//Draw menu icon one image at a time
@@ -347,21 +349,21 @@ void GUI::DrawRect(Point P1, Point P2, GfxInfo RectGfxInfo) const
 
 }
 
-void GUI::DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const
+void GUI::DrawCircle(Point P1, Point P2, GfxInfo CircGfxInfo) const
 {
 	color DrawingClr;
-	if (RectGfxInfo.isSelected)	//shape is selected
+	if (CircGfxInfo.isSelected)	//shape is selected
 		DrawingClr = HighlightColor; //shape should be drawn highlighted
 	else
-		DrawingClr = RectGfxInfo.DrawClr;
+		DrawingClr = CircGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, RectGfxInfo.BorderWdth);	//Set Drawing color & width
+	pWind->SetPen(DrawingClr, CircGfxInfo.BorderWdth);	//Set Drawing color & width
 
 	drawstyle style;
-	if (RectGfxInfo.isFilled)
+	if (CircGfxInfo.isFilled)
 	{
 		style = FILLED;
-		pWind->SetBrush(RectGfxInfo.FillClr);
+		pWind->SetBrush(CircGfxInfo.FillClr);
 	}
 	else
 		style = FRAME;
@@ -370,21 +372,21 @@ void GUI::DrawCircle(Point P1, Point P2, GfxInfo RectGfxInfo) const
 
 }
 
-void GUI::DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const
+void GUI::DrawSquare(Point P1, Point P2, GfxInfo SquaGfxInfo) const
 {
 	color DrawingClr;
-	if (RectGfxInfo.isSelected)	//shape is selected
+	if (SquaGfxInfo.isSelected)	//shape is selected
 		DrawingClr = HighlightColor; //shape should be drawn highlighted
 	else
-		DrawingClr = RectGfxInfo.DrawClr;
+		DrawingClr = SquaGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, RectGfxInfo.BorderWdth);	//Set Drawing color & width
+	pWind->SetPen(DrawingClr, SquaGfxInfo.BorderWdth);	//Set Drawing color & width
 
 	drawstyle style;
-	if (RectGfxInfo.isFilled)
+	if (SquaGfxInfo.isFilled)
 	{
 		style = FILLED;
-		pWind->SetBrush(RectGfxInfo.FillClr);
+		pWind->SetBrush(SquaGfxInfo.FillClr);
 	}
 	else
 		style = FRAME;
@@ -393,26 +395,81 @@ void GUI::DrawSquare(Point P1, Point P2, GfxInfo RectGfxInfo) const
 
 }
 
-void GUI::DrawLine(Point P1, Point P2, GfxInfo RectGfxInfo) const
+void GUI::DrawLine(Point P1, Point P2, GfxInfo LineGfxInfo) const
 {
 	color DrawingClr;
-	if (RectGfxInfo.isSelected)	//shape is selected
+	if (LineGfxInfo.isSelected)	//shape is selected
 		DrawingClr = HighlightColor; //shape should be drawn highlighted
 	else
-		DrawingClr = RectGfxInfo.DrawClr;
+		DrawingClr = LineGfxInfo.DrawClr;
 
-	pWind->SetPen(DrawingClr, RectGfxInfo.BorderWdth);	//Set Drawing color & width
+	pWind->SetPen(DrawingClr, LineGfxInfo.BorderWdth);	//Set Drawing color & width
 
 	drawstyle style;
-	if (RectGfxInfo.isFilled)
+	if (LineGfxInfo.isFilled)
 	{
 		style = FILLED;
-		pWind->SetBrush(RectGfxInfo.FillClr);
+		pWind->SetBrush(LineGfxInfo.FillClr);
 	}
 	else
 		style = FRAME;
 
 	pWind->DrawLine(P1.x, P1.y, P2.x, P2.y, style);
+
+}
+
+void GUI::DrawTriangle(Point P1, Point P2, Point P3, GfxInfo TriaGfxInfo) const
+{
+	color DrawingClr;
+	if (TriaGfxInfo.isSelected)	//shape is selected
+		DrawingClr = HighlightColor; //shape should be drawn highlighted
+	else
+		DrawingClr = TriaGfxInfo.DrawClr;
+
+	pWind->SetPen(DrawingClr, TriaGfxInfo.BorderWdth);	//Set Drawing color & width
+
+	drawstyle style;
+	if (TriaGfxInfo.isFilled)
+	{
+		style = FILLED;
+		pWind->SetBrush(TriaGfxInfo.FillClr);
+	}
+	else
+		style = FRAME;
+
+	pWind->DrawTriangle(P1.x, P1.y, P2.x, P2.y,P3.x,P3.y, style);
+
+}
+
+//const int* ipX, const int* ipY, const int iVertices, const drawstyle dsStyle
+void GUI::DrawIrregularpolygon(vector <Point> Points,int V_number, GfxInfo IrregpolGfxInfo) const
+{
+	color DrawingClr;
+	if (IrregpolGfxInfo.isSelected)	//shape is selected
+		DrawingClr = HighlightColor; //shape should be drawn highlighted
+	else
+		DrawingClr = IrregpolGfxInfo.DrawClr;
+
+	pWind->SetPen(DrawingClr, IrregpolGfxInfo.BorderWdth);	//Set Drawing color & width
+
+	drawstyle style;
+	if (IrregpolGfxInfo.isFilled)
+	{
+		style = FILLED;
+		pWind->SetBrush(IrregpolGfxInfo.FillClr);
+	}
+	else
+		style = FRAME;
+
+	int* x = new int[V_number];
+	int* y = new int[V_number];
+	for (int i = 0; i < V_number; i++)
+	{
+		x[i] = Points[i].x;
+		y[i] = Points[i].y;
+	}
+
+	pWind->DrawPolygon(x,y , V_number, style);
 
 }
 

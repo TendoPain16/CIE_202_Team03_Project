@@ -4,22 +4,26 @@
 #include <vector>
 using namespace std;
 
-//forward decl
-class GUI;	
 
-//A class that is responsible on everything related to shapes
-class Graph
+class GUI;	//forward decl
+
+
+class Graph			//A class that is responsible on everything related to shapes
 {
 private:
-	vector <shape*> shapesList; //a container to hold all shapes							   
-	shape* selectedShape;	//pointer to the currently selected shape
+	vector <shape*> shapesList;		 //a container to hold all shapes							   
+	shape* selectedShape;		  	 //pointer to the currently selected shape
+
 public:										
 	Graph();
 	~Graph();
-	void Addshape(shape* pFig); //Adds a new shape to the shapesList
-	void Draw(GUI* pUI) const;			//Draw the graph (draw all shapes)
-	shape* Getshape(int x, int y) const; //Search for a shape given a point inside the shape
-	void Clear_shapeslist();
-	void Save(ofstream& outfile);	//Save all shapes to a file
-	void Load(ifstream& inputfile, GUI* pUI);	//Load all shapes from a file
+
+	void Addshape(shape* pFig);					//Adds a new shape to the shapesList.
+	void Draw(GUI* pUI) const;					//Draw the graph (draw all shapes).
+	void Save(ofstream& outfile);				//Save all shapes to a file.
+	void Load(ifstream& inputfile, GUI* pUI);	//Load all shapes from a file.
+	void Clear_shapeslist();					//clear all shapes.
+
+	shape* Getshape(int x, int y) const;		//Search for a shape given a point inside the shape.
+	
 };
