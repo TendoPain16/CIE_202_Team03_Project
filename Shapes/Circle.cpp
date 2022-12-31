@@ -47,8 +47,11 @@ void Circle::Save(ofstream& file) const
 }
 
 
-void Circle::Load(vector <string> line, GUI* pUI)
+void Circle::Load(vector <string> line, GUI* pUI, ifstream* inputfile)
 {
+	ID = stoi(line[2]);
+	if (ID >= ID_gen)
+		ID_gen = ID;
 	ShpGfxInfo.DrawClr = color(stoi(line[3]), stoi(line[4]), stoi(line[5]));
 	ShpGfxInfo.isSelected = false;
 
@@ -64,4 +67,21 @@ void Circle::Load(vector <string> line, GUI* pUI)
 
 	Center.x = stoi(line[11]); Center.y = stoi(line[12]);
 	Radius.x = stoi(line[13]); Radius.y = stoi(line[14]);
+}
+
+
+void Circle::Resize(double number)
+{
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	rad = rad * number;
+
+	Radius.x = Center.x + rad;
+	Radius.y = Center.y;
+}
+
+
+vector <shape*> Circle::get_shapes_list() 
+{ 
+	vector <shape*> null;
+	return null;
 }

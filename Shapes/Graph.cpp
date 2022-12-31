@@ -10,7 +10,8 @@
 #include "..\shapes\Line.h"
 #include "..\shapes\IrregularPolygon.h"
 #include "..\shapes\RegularPolygon.h"
-
+#include "..\shapes\Group.h"
+#include <iostream>
 
 Graph::Graph() {selectedShape = nullptr;}
 
@@ -29,9 +30,15 @@ void Graph::Addshape(shape* pShp)	//Add a shape to the list of shapes
 
 void Graph::Draw(GUI* pUI) const	//Draw all shapes on the user interface
 {
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		cout << shapesList[i]->Get_current_ID() << "  ";
+	}
+	cout << endl;
 	pUI->ClearDrawArea();
 	for (auto shapePointer : shapesList)
-		shapePointer->Draw(pUI);	
+		shapePointer->Draw(pUI);
+	pUI->CreateDrawToolBar();
 }
 
 
@@ -61,9 +68,11 @@ void Graph::Load(ifstream& inputfile, GUI* pUI)
 	pUI->ClearDrawArea();
 	shapesList.clear();
 
-	string line;
+	
 	vector <string> wordsList;
 	string var;
+
+	string line;
 	while (getline(inputfile, line))
 	{
 		istringstream ss(line);
@@ -82,10 +91,54 @@ void Graph::Load(ifstream& inputfile, GUI* pUI)
 		case 3: R = new Line(); break;
 		case 4: R = new Triangle(); break;
 		case 5: R = new IrregularPolygon(); break;
+		case 6: R = new Group(); break;
 		default: return;
 		}
 
-		R->Load(wordsList, pUI);
+		R->Load(wordsList, pUI, &inputfile);
+		
 		Addshape(R);
 	}
+}
+
+
+void Graph::resize(double number)
+{
+	for (auto shapePointer : shapesList)
+		if (shapePointer->IsSelected())
+			shapePointer->Resize(number);
+}
+
+vector <shape*> Graph::group_shapes()
+{
+	vector <shape*> ListOfShapes;
+	vector <int> ShapesToBeDeleted;
+	for (int i = 0; i < shapesList.size(); i++)
+		if (shapesList[i]->IsSelected())
+		{
+			ListOfShapes.push_back(shapesList[i]);
+			ShapesToBeDeleted.push_back(i);
+		}
+
+	for (auto x : ShapesToBeDeleted)
+	{
+		shapesList.erase(shapesList.begin() + x);
+		for (int i = 0; i < ShapesToBeDeleted.size(); i++)
+		{
+			ShapesToBeDeleted[i] = ShapesToBeDeleted[i] - 1;
+		}
+	}
+
+	return ListOfShapes;
+}
+
+
+vector <shape*> Graph::GetShapesList() const
+{
+	return shapesList;
+}
+
+void Graph::SetShapesList(vector <shape*> x)
+{
+	shapesList = x;
 }

@@ -13,6 +13,8 @@ public:
 	virtual ~Line();
 	virtual void Draw(GUI* pUI) const;
 	virtual void Save(ofstream&) const;
-	virtual void Load(vector <string> line, GUI* pUI);
+	virtual void Load(vector <string> line, GUI* pUI, ifstream* inputfile = nullptr);
+	virtual void Resize(double number);
+	virtual vector <shape*> get_shapes_list();
 };
 

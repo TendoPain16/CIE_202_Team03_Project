@@ -14,10 +14,12 @@ opAddLine::~opAddLine()
 
 void opAddLine::Execute()						//Execute the operation
 {
+	
 	Point P1, P2;
 
 	GUI* pUI = pControl->GetUI();				//Get a Pointer to the Input / Output Interfaces
-
+	Graph* pGr = pControl->getGraph();			//Get a pointer to the graph
+	/*
 	pUI->PrintMessage("New Line: Click at first corner");
 	pUI->GetPointClicked(P1.x, P1.y);			//Read 1st corner and store in point P1
 
@@ -37,7 +39,21 @@ void opAddLine::Execute()						//Execute the operation
 
 	Line* R = new Line(P1, P2, RectGfxInfo);	//Create a line with the above parameters
 
-	Graph* pGr = pControl->getGraph();			//Get a pointer to the graph
+	
 
 	pGr->Addshape(R);							//Add the line to the list of shapes
+	*/
+
+	int id = stoi(pUI->GetSrting("enter id: "));
+	vector <shape*> list = pGr->GetShapesList();
+	for (auto s : list)
+	{
+		if (s->Get_current_ID()  == id)
+		{
+			if (s->IsSelected() == true)
+				s->SetSelected(false);
+			else
+				s->SetSelected(true);
+		}
+	}
 }

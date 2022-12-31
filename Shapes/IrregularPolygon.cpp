@@ -1,5 +1,5 @@
 #include "IrregularPolygon.h"
-
+#include <iostream>
 
 IrregularPolygon::IrregularPolygon() {V_number = 0;}
 
@@ -52,8 +52,11 @@ void IrregularPolygon::Save(ofstream& file) const
 }
 
 
-void IrregularPolygon::Load(vector <string> line, GUI* pUI)
+void IrregularPolygon::Load(vector <string> line, GUI* pUI, ifstream* inputfile)
 {
+	ID = stoi(line[2]);
+	if (ID >= ID_gen)
+		ID_gen = ID;
 	ShpGfxInfo.DrawClr = color(stoi(line[3]), stoi(line[4]), stoi(line[5]));
 	ShpGfxInfo.isSelected = false;
 
@@ -79,4 +82,32 @@ void IrregularPolygon::Load(vector <string> line, GUI* pUI)
 		j = j + 2;
 	}
 	j = 0;
+}
+
+
+void IrregularPolygon::Resize(double number)
+{
+	int x_sum = 0;
+	int y_sum = 0;
+	for (auto temp : Points)
+	{
+		x_sum = x_sum + temp.x;
+		y_sum = y_sum + temp.y;
+	}
+
+	Point mid;
+	mid.x = x_sum / Points.size();
+	mid.y = y_sum / Points.size();
+	for (int i = 0; i < Points.size(); i++)
+	{
+		scale_two_points(mid, Points[i], number);
+	}
+	
+}
+
+
+vector <shape*> IrregularPolygon::get_shapes_list()
+{
+	vector <shape*> null;
+	return null;
 }

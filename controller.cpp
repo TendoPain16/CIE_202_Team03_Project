@@ -10,6 +10,9 @@
 #include "operations\opToDraw.h"
 #include "operations\opSave.h"
 #include "operations\opLoad.h"
+#include "operations\opResize.h"
+#include "operations\opGroupShapes.h"
+#include "operations\opUnGroupShapes.h"
 
 
 
@@ -82,6 +85,18 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 
 	case LOAD:
 		pOp = new opLoad(this);
+		break;
+
+	case RESIZE:
+		pOp = new opResize(this);
+		break;
+
+	case GROUP_SHAPES:
+		pOp = new opGroupShapes(this);
+		break;
+
+	case UN_GROUP_SHAPES:
+		pOp = new opUnGroupShapes(this);
 		break;
 
 	case EXIT:

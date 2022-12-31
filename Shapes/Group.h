@@ -2,18 +2,20 @@
 #include "shape.h" 
 #include <fstream>
 
-class Circle : public shape
+class Group : public shape
 {
 private:
-	Point Center;
-	Point Radius;
+	vector <shape*> groupshapesList;
+	
+
 public:
-	Circle();
-	Circle(Point, Point, GfxInfo shapeGfxInfo);
-	virtual ~Circle();
+	Group();
+	Group(vector <shape*> come, GfxInfo shapeGfxInfo);
+	virtual ~Group();
 	virtual void Draw(GUI* pUI) const;
 	virtual void Save(ofstream&) const;
-	virtual void Load(vector <string> line, GUI* pUI, ifstream* inputfile = nullptr) override;
+	virtual void Load(vector <string> line, GUI* pUI, ifstream* inputfile = nullptr);
 	virtual void Resize(double number);
+
 	virtual vector <shape*> get_shapes_list();
 };

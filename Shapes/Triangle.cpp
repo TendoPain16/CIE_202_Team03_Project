@@ -48,8 +48,11 @@ void Triangle::Save(ofstream& file) const
 }
 
 
-void Triangle::Load(vector <string> line, GUI* pUI)
+void Triangle::Load(vector <string> line, GUI* pUI, ifstream* inputfile)
 {
+	ID = stoi(line[2]);
+	if (ID >= ID_gen)
+		ID_gen = ID;
 	ShpGfxInfo.isSelected = false;
 	ShpGfxInfo.DrawClr = color(stoi(line[3]), stoi(line[4]), stoi(line[5]));
 
@@ -66,4 +69,20 @@ void Triangle::Load(vector <string> line, GUI* pUI)
 	Corner1.x = stoi(line[11]); Corner1.y = stoi(line[12]);
 	Corner2.x = stoi(line[13]); Corner2.y = stoi(line[14]);
 	Corner3.x = stoi(line[15]); Corner3.y = stoi(line[16]);
+}
+
+void Triangle::Resize(double number)
+{
+	Point mid;
+	mid.x = (Corner1.x + Corner2.x + Corner3.x) / 3;
+	mid.y = (Corner1.y + Corner2.y + Corner3.y) / 3;
+	scale_two_points(mid, Corner1, number);
+	scale_two_points(mid, Corner2, number);
+	scale_two_points(mid, Corner3, number);
+}
+
+vector <shape*> Triangle::get_shapes_list()
+{
+	vector <shape*> null;
+	return null;
 }

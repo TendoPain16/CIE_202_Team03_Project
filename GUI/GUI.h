@@ -43,6 +43,8 @@ enum DrawMenuIcon //The icons of the Draw menu (you should add more icons)
 	ICON_FILL_CLR,
 	ICON_DEL,
 	ICON_RESIZE,
+	ICON_GROUP_SHAPES,
+	ICON_UNGROUP_SHAPES,
 	ICON_SAVE,
 	ICON_LOAD,
 	ICON_TO_PLAY,
@@ -121,7 +123,6 @@ public:
 	void DrawTriangle(Point P1, Point P2,Point P3, GfxInfo TriaGfxInfo) const;  //Draw a triangle
 	void DrawIrregularpolygon(vector <Point> Points, int V_number, GfxInfo IrregpolGfxInfo) const;  //Draw a irregularpolygon
 	///Make similar functions for drawing all other shapes.
-
 
 	void PrintMessage(string msg) const;	//Print a message on Status bar
 

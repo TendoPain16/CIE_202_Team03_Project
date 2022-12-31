@@ -23,6 +23,8 @@ enum operationType //The operations supported (you can add more if needed)
 	DEL,			//Delete a shape(s)
 	MOVE,			//Move a shape(s)
 	RESIZE,			//Resize a shape(s)
+	GROUP_SHAPES,	//group some shapes
+	UN_GROUP_SHAPES,
 	ROTATE,			//Rotate a shape(s)
 	SEND_BACK,		//Send a shape to the back of all shapes
 	BRNG_FRNT,		//Bring a shape to the front of all shapes

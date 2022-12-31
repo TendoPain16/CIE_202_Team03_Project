@@ -108,6 +108,8 @@ operationType GUI::GetUseroperation() const
 			case ICON_FILL_CLR:			return CHNG_FILL_CLR;
 			case ICON_DEL:				return DEL;
 			case ICON_RESIZE:			return RESIZE;
+			case ICON_GROUP_SHAPES:		return GROUP_SHAPES;
+			case ICON_UNGROUP_SHAPES:	return UN_GROUP_SHAPES;
 			case ICON_SAVE:				return SAVE;
 			case ICON_LOAD:				return LOAD;
 			case ICON_TO_PLAY:			return TO_PLAY;
@@ -210,40 +212,37 @@ void GUI::ClearStatusBar() const
 void GUI::CreateDrawToolBar() 
 {
 	InterfaceMode = MODE_DRAW;
-
 	//You can draw the tool bar icons in any way you want.
 	//Below is one possible way
-
 	//First prepare List of images for each menu icon
 	//To control the order of these images in the menu, 
 	//reoder them in UI_Info.h ==> enum DrawMenuIcon
 	string MenuIconImages[DRAW_ICON_COUNT];
-	MenuIconImages[ICON_RECT]		= "images\\MenuIcons\\Menu_Rect.jpg";
-	MenuIconImages[ICON_CIRC]		= "images\\MenuIcons\\Menu_Circ.jpg";
-	MenuIconImages[ICON_SQUA]		= "images\\MenuIcons\\Menu_Square.jpg";
-	MenuIconImages[ICON_TRIA]		= "images\\MenuIcons\\Menu_Triangle.jpg";
-	MenuIconImages[ICON_IRREGPOL]	= "images\\MenuIcons\\Menu_IrregularPolygon.jpg";
-	MenuIconImages[ICON_LINE]		= "images\\MenuIcons\\Menu_Line.jpg";
-	MenuIconImages[ICON_DRAW_CLR]	= "images\\MenuIcons\\Menu_Pen.jpg";
-	MenuIconImages[ICON_FILL_CLR]	= "images\\MenuIcons\\Menu_Fill.jpg";
-	MenuIconImages[ICON_DEL]		= "images\\MenuIcons\\Menu_Delete.jpg";
-	MenuIconImages[ICON_RESIZE]		= "images\\MenuIcons\\Menu_Resize.jpg";
-	MenuIconImages[ICON_SAVE]		= "images\\MenuIcons\\Menu_Save.jpg";
-	MenuIconImages[ICON_LOAD]		= "images\\MenuIcons\\Menu_Load.jpg";
-	MenuIconImages[ICON_TO_PLAY]	= "images\\MenuIcons\\Menu_Play.jpg";
-	MenuIconImages[ICON_EXIT]		= "images\\MenuIcons\\Menu_Exit.jpg";
+	MenuIconImages[ICON_RECT]			= "images\\MenuIcons\\Menu_Rect.jpg";
+	MenuIconImages[ICON_CIRC]			= "images\\MenuIcons\\Menu_Circ.jpg";
+	MenuIconImages[ICON_SQUA]			= "images\\MenuIcons\\Menu_Square.jpg";
+	MenuIconImages[ICON_TRIA]			= "images\\MenuIcons\\Menu_Triangle.jpg";
+	MenuIconImages[ICON_IRREGPOL]		= "images\\MenuIcons\\Menu_IrregularPolygon.jpg";
+	MenuIconImages[ICON_LINE]			= "images\\MenuIcons\\Menu_Line.jpg";
+	MenuIconImages[ICON_DRAW_CLR]		= "images\\MenuIcons\\Menu_Pen.jpg";
+	MenuIconImages[ICON_FILL_CLR]		= "images\\MenuIcons\\Menu_Fill.jpg";
+	MenuIconImages[ICON_DEL]			= "images\\MenuIcons\\Menu_Delete.jpg";
+	MenuIconImages[ICON_RESIZE]			= "images\\MenuIcons\\Menu_Resize.jpg";
+	MenuIconImages[ICON_GROUP_SHAPES]   = "images\\MenuIcons\\Menu_Group.jpg";
+	MenuIconImages[ICON_UNGROUP_SHAPES] = "images\\MenuIcons\\Menu_UnGroup.jpg";
+	MenuIconImages[ICON_SAVE]			= "images\\MenuIcons\\Menu_Save.jpg";
+	MenuIconImages[ICON_LOAD]			= "images\\MenuIcons\\Menu_Load.jpg";
+	MenuIconImages[ICON_TO_PLAY]		= "images\\MenuIcons\\Menu_Play.jpg";
+	MenuIconImages[ICON_EXIT]			= "images\\MenuIcons\\Menu_Exit.jpg";
 	//TODO: Prepare images for each menu icon and add it to the list
 
 	//Draw menu icon one image at a time
 	for (int i = 0; i < DRAW_ICON_COUNT; i++)
 		pWind->DrawImage(MenuIconImages[i], i * MenuIconWidth, 0, MenuIconWidth, ToolBarHeight);
 
-
-
 	//Draw a line under the toolbar
 	pWind->SetPen(RED, 3);
 	pWind->DrawLine(0, ToolBarHeight, width, ToolBarHeight);
-
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -321,6 +320,9 @@ void GUI::SetCrntDrawColor(color x)
 {
 	DrawColor = x;
 }
+
+
+
 
 //======================================================================================//
 //								shapes Drawing Functions								//
