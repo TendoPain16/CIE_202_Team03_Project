@@ -19,6 +19,13 @@ IrregularPolygon::~IrregularPolygon()
 void IrregularPolygon::Draw(GUI* pUI) const
 {
 	pUI->DrawIrregularpolygon(Points, V_number, ShpGfxInfo);	//Call Output::DrawIrregularPolygon to draw a IrregulatPolygon on the screen
+	if (resizing == true)
+	{
+		for (int i = 0; i < Points.size(); i++)
+		{
+			pUI->DrawSquareInPoint(Points[i]);
+		}
+	}
 }
 
 
@@ -101,13 +108,46 @@ void IrregularPolygon::Resize(double number)
 	for (int i = 0; i < Points.size(); i++)
 	{
 		scale_two_points(mid, Points[i], number);
+	}	
+}
+
+int IrregularPolygon::is_on_corners(Point x)
+{
+	Point p1;
+	Point p2;
+	for (int i = 0; i < Points.size(); i++)
+	{
+		p1.x = Points[i].x - 5;
+		p1.y = Points[i].y - 5;
+		p2.x = Points[i].x + 5;
+		p2.y = Points[i].y + 5;
+		if (((p1.x >= x.x) && (x.x >= p2.x) && (p1.y >= x.y) && (x.y >= p2.y)) || ((p1.x <= x.x) && (x.x <= p2.x) && (p1.y <= x.y) && (x.y <= p2.y)))
+		{
+			return i + 1;
+		}
 	}
-	
+		return 0;
 }
 
 
-vector <shape*> IrregularPolygon::get_shapes_list()
+void IrregularPolygon::Resize_By_Drag(int point_number, Point old_point, Point new_point)
 {
-	vector <shape*> null;
-	return null;
+	Points[point_number - 1] = new_point;
+}
+
+void IrregularPolygon::Move(Point old_point, Point new_point)
+{
+	int diff_x = new_point.x - old_point.x;
+	int diff_y = new_point.y - old_point.y;
+
+	for (int i = 0; i < Points.size(); i++)
+	{
+		Points[i].x = Points[i].x + diff_x;
+		Points[i].y = Points[i].y + diff_y;
+	}
+}
+
+bool IrregularPolygon::IsPointInside(int x, int y)
+{
+	return false;
 }

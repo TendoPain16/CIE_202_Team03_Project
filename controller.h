@@ -19,7 +19,7 @@ public:
 	~controller();
 	
 	// -- operation-Related Functions
-	operationType GetUseroperation() const;		//Reads the input command from the user and returns the corresponding operation type
+	operationType GetUseroperation();		//Reads the input command from the user and returns the corresponding operation type
 	operation* createOperation(operationType) ; //Creates an operation
 	void Run();
 	

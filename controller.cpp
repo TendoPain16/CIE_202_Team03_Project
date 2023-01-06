@@ -6,6 +6,24 @@
 #include "operations\opAddTriangle.h"
 #include "operations\opAddIrregularPolygon.h"
 #include "operations\opChngDrawClr.h"
+//#include "operations\opChngFillClr.h"
+#include "operations\opSelect.h"
+//#include "operations\opDelete.h"
+//#include "operations\opCopy.h"
+//#include "operations\opPaste.h"
+//#include "operations\opDublicate.h"
+//#include "operations\opExit.h"
+//#include "operations\opStartGame.h"
+//#include "operations\opRestartGame.h"
+#include "operations\opMove.h"
+//#include "operations\opScramble.h"
+#include "operations\opResizeByDrag.h"
+//#include "operations\opHide.h"
+//#include "operations\opUnhide.h"
+//#include "operations\opMatchShapes.h"
+
+
+
 #include "operations\opToPlay.h"
 #include "operations\opToDraw.h"
 #include "operations\opSave.h"
@@ -30,7 +48,7 @@ controller::controller()
 //==================================================================================//
 //							operations-Related Functions							//
 //==================================================================================//
-operationType controller::GetUseroperation() const		//Ask the input to get the operation from the user.
+operationType controller::GetUseroperation()	//Ask the input to get the operation from the user.
 {
 	return pGUI->GetUseroperation();		
 }
@@ -41,7 +59,6 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 	operation* pOp = nullptr;
 	
 	switch (OpType)		//According to operation Type, create the corresponding operation object
-
 	{
 	case DRAW_RECT:
 		pOp = new opAddRect(this);
@@ -71,6 +88,18 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		pOp = new opChngDrawClr(this);
 		break;
 
+	case CHNG_FILL_CLR:
+	//	pOp = new opChngFillClr(this);
+		break;
+
+	case SELECT:
+		pOp = new opSelect(this);
+		break;
+
+	case DEL:
+	//	pOp = new opDelete(this);
+		break;
+
 	case TO_PLAY:
 		pOp = new opToPlay(this);
 		break;
@@ -91,6 +120,30 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		pOp = new opResize(this);
 		break;
 
+	case MOVE:
+		pOp = new opMove(this);
+		break;
+
+	case COPY:
+	//	pOp = new opCopy(this);
+		break;
+
+	case PASTE:
+	//	pOp = new opPaste(this);
+		break;
+
+	case DUPLICAT:
+	//	pOp = new opDublicate(this);
+		break;
+
+	case SCRAMBLE:
+	//	pOp = new opScramble(this);
+		break;
+
+	case RESIZE_BY_DRAG:
+		pOp = new opResizeByDrag(this);
+		break;
+
 	case GROUP_SHAPES:
 		pOp = new opGroupShapes(this);
 		break;
@@ -100,12 +153,34 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case EXIT:
-		///create Exitoperation here
-
+	//	pOp = new opExit(this);
 		break;
 
-	case STATUS:	//a click on the status bar ==> no operation
+	case START_GAME:
+	//	pOp = new opStartGame(this);
 		break;
+
+	case RESTART_GAME:
+	//	pOp = new opRestartGame(this);
+		break;
+
+	case HIDE:
+	//	pOp = new opHide(this);
+		break;
+
+	case UNHIDE:
+	//	pOp = new opUnhide(this);
+		break;
+
+	case MATCH_SHAPES:
+	//	pOp = new opMatchShapes(this);
+		break;
+
+	case STATUS:
+		break;
+
+	default: 
+		return NULL;
 	}
 
 	return pOp;

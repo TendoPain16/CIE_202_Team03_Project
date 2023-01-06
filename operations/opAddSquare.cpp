@@ -35,7 +35,11 @@ void opAddSquare::Execute()		//Execute the operation
 	RectGfxInfo.isFilled = false;
 	RectGfxInfo.isSelected = false;
 
-	Square* R = new Square(P1, P2, RectGfxInfo);	//Create a square with the above parameters
+	Point f_P2;
+	f_P2.x = P1.x + (P2.x - P1.x);
+	f_P2.y = P1.y + (P2.x - P1.x);
+
+	Square* R = new Square(P1, f_P2, RectGfxInfo);	//Create a square with the above parameters
 
 	Graph* pGr = pControl->getGraph();				//Get a pointer to the graph
 

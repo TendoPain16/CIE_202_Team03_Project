@@ -1,8 +1,4 @@
-1	Square	4	0	0	255	NotFilled	NotFilled	NotFilled	3	Empty	893	200	893	200
-1	Square	5	0	0	255	NotFilled	NotFilled	NotFilled	3	Empty	803	192	904	194
-0	Rectangle	6	0	0	255	NotFilled	NotFilled	NotFilled	3	Empty	1015	168	1207	532
-2	Circle	7	0	0	255	5	48	225	3	Empty	818	468	869	405
-6	3	8
-0	Rectangle	1	0	0	255	63	255	58	3	Empty	99	148	329	244
-4	Triangle	2	0	0	255	63	255	58	3	Empty	423	158	490	136	489	226
-2	Circle	3	0	0	255	63	255	58	3	Empty	299	391	342	320
+1	Square	1	0	0	255	57	254	60	3	Empty	170	124	273	186
+0	Rectangle	2	0	0	255	57	254	60	3	Empty	129	318	353	417
+2	Circle	3	0	0	255	57	254	60	3	Empty	109	166	65	142
+4	Triangle	4	0	0	255	57	254	60	3	Empty	349	189	385	92	494	259

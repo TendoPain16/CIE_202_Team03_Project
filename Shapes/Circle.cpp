@@ -1,5 +1,5 @@
 #include "Circle.h"
-
+#include <iostream>
 
 Circle::Circle() {Center.x = 0; Center.y = 0; Radius.x = 0; Radius.y = 0;}
 
@@ -20,6 +20,26 @@ void Circle::Draw(GUI* pUI) const
 {
 	//Call Output::DrawCIRC to draw a circle on the screen	
 	pUI->DrawCircle(Center, Radius, ShpGfxInfo);
+	if (resizing == true)
+	{
+		int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+		Point p1;
+		p1.x = Center.x;
+		p1.y = Center.y - rad;
+		pUI->DrawSquareInPoint(p1);
+		Point p2;
+		p2.x = Center.x + rad;
+		p2.y = Center.y;
+		pUI->DrawSquareInPoint(p2);
+		Point p3;
+		p3.x = Center.x;
+		p3.y = Center.y + rad;
+		pUI->DrawSquareInPoint(p3);
+		Point p4;
+		p4.x = Center.x - rad;
+		p4.y = Center.y;
+		pUI->DrawSquareInPoint(p4);
+	}
 }
 
 void Circle::Save(ofstream& file) const
@@ -79,9 +99,48 @@ void Circle::Resize(double number)
 	Radius.y = Center.y;
 }
 
+int Circle::is_on_corners(Point x)
+{
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	int dist = sqrt(pow(Center.x - x.x, 2) + pow(Center.y - x.y, 2));
+	if ((dist > rad - 10) && (dist < rad + 10))
+	{
+		return 1;
+	}
+	else
+		return 0;
+}
 
-vector <shape*> Circle::get_shapes_list() 
-{ 
-	vector <shape*> null;
-	return null;
+void Circle::Resize_By_Drag(int point_number, Point old_point, Point new_point)
+{
+	Radius.x = new_point.x;
+	Radius.y = new_point.y;
+}
+
+void Circle::Move(Point old_point, Point new_point)
+{
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	int diff_x = new_point.x - old_point.x;
+	int diff_y = new_point.y - old_point.y;
+
+	Center.x = Center.x + diff_x;
+	Center.y = Center.y + diff_y;
+	Radius.x = Center.x + rad;
+	Radius.y = Center.y;
+
+}
+
+bool Circle::IsPointInside(int x, int y)
+{
+	Point p;
+	p.x = x;
+	p.y = y;
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	int dist = sqrt(pow(Center.x - p.x, 2) + pow(Center.y - p.y, 2));
+	if (dist <= rad)
+	{
+		return true;
+	}
+	else
+		return false;
 }

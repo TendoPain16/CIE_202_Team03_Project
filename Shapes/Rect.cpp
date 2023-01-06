@@ -18,7 +18,20 @@ Rect::~Rect()
 
 void Rect::Draw(GUI* pUI) const
 {
-	pUI->DrawRect(Corner1, Corner2, ShpGfxInfo);	//Call Output::DrawRect to draw a rectangle on the screen	
+	pUI->DrawRect(Corner1, Corner2, ShpGfxInfo);	//Call Output::DrawRect to draw a rectangle on the screen
+	if (resizing == true)
+	{
+		Point Corner3;
+		Point Corner4;
+		Corner3.x = Corner1.x;
+		Corner3.y = Corner2.y;
+		Corner4.x = Corner2.x;
+		Corner4.y = Corner1.y;
+		pUI->DrawSquareInPoint(Corner1);
+		pUI->DrawSquareInPoint(Corner2);
+		pUI->DrawSquareInPoint(Corner3);
+		pUI->DrawSquareInPoint(Corner4);
+	}
 }
 
 
@@ -79,9 +92,79 @@ void Rect::Resize(double number)
 	scale_two_points(mid, Corner2, number);
 }
 
-
-vector <shape*> Rect::get_shapes_list()
+int Rect::is_on_corners(Point x)
 {
-	vector <shape*> null;
-	return null;
+	Point p1;
+	Point p2;
+	Point Corner3;
+	Point Corner4;
+	Corner3.x = Corner1.x;
+	Corner3.y = Corner2.y;
+	Corner4.x = Corner2.x;
+	Corner4.y = Corner1.y;
+	vector <Point> list;
+	list.push_back(Corner1);	list.push_back(Corner2);	list.push_back(Corner3);	list.push_back(Corner4);
+	for (int i = 0; i < 4; i++)
+	{
+		p1.x = list[i].x - 5;
+		p1.y = list[i].y - 5;
+		p2.x = list[i].x + 5;
+		p2.y = list[i].y + 5;
+		if (((p1.x >= x.x) && (x.x >= p2.x) && (p1.y >= x.y) && (x.y >= p2.y)) || ((p1.x <= x.x) && (x.x <= p2.x) && (p1.y <= x.y) && (x.y <= p2.y)))
+		{
+			return i + 1;
+		}
+	}
+	return 0;
+}
+
+
+void Rect::Resize_By_Drag(int point_number, Point old_point, Point new_point)
+{
+	switch (point_number)
+	{
+	case 1: Corner1 = new_point; break;
+	case 2: Corner2 = new_point; break;
+	case 3: Corner1.x = new_point.x; Corner2.y = new_point.y; break;
+	case 4: Corner2.x = new_point.x; Corner1.y = new_point.y; break;
+	}
+}
+
+void Rect::Move(Point old_point, Point new_point)
+{
+	int diff_x = new_point.x - old_point.x;
+	int diff_y = new_point.y - old_point.y;
+
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
+}
+
+bool Rect::IsPointInside(int x, int y)
+{
+	Point temp;
+	temp.x = x;
+	temp.y = y;
+
+	Point Corner3;
+	Corner3.x = Corner2.x;
+	Corner3.y = Corner1.y;
+
+	Point Corner4;
+	Corner4.x = Corner1.x;
+	Corner4.y = Corner2.y;
+
+	double tri_1 = calc_area_of_triangle(Corner1,Corner3,temp);
+	double tri_2 = calc_area_of_triangle(Corner3, Corner2, temp);
+	double tri_3 = calc_area_of_triangle(Corner2, Corner4, temp);
+	double tri_4 = calc_area_of_triangle(Corner4, Corner1, temp);
+	double area_of_rect = abs(Corner1.x - Corner2.x) * abs(Corner1.y - Corner2.y);
+
+	if (area_of_rect == tri_1 + tri_2 + tri_3 + tri_4)
+	{
+		return true;
+	}
+	else
+		return false;
 }

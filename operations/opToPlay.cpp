@@ -18,7 +18,6 @@ void opToPlay::Execute()
 	pUI->SetCrntMode(MODE_PLAY);
 	pUI->ClearStatusBar();
 	pUI->ClearDrawArea();
-	pGr->Clear_shapeslist();
 	pUI->CreatePlayToolBar();
 	pUI->PrintMessage("Welcome To Play Mode ^_^");
 }

@@ -22,10 +22,16 @@ enum operationType //The operations supported (you can add more if needed)
 	REDO,			//redo op
 	DEL,			//Delete a shape(s)
 	MOVE,			//Move a shape(s)
+	COPY,
+	PASTE,
 	RESIZE,			//Resize a shape(s)
+	RESIZE_BY_DRAG,
 	GROUP_SHAPES,	//group some shapes
 	UN_GROUP_SHAPES,
+	DUPLICAT,
+	SCRAMBLE,
 	ROTATE,			//Rotate a shape(s)
+	SELECT,
 	SEND_BACK,		//Send a shape to the back of all shapes
 	BRNG_FRNT,		//Bring a shape to the front of all shapes
 	SAVE,			//Save the whole graph to a file
@@ -36,6 +42,13 @@ enum operationType //The operations supported (you can add more if needed)
 	PLAYING_AREA,	//A click on the playing area
 	STATUS,			//A click on the status bar
 	EMPTY,			//A click on empty place in the toolbar
+
+	START_GAME,
+	RESTART_GAME,
+	MATCH_SHAPES,
+	HIDE,
+	UNHIDE,
+	
 
 	TO_DRAW,		//Switch interface to Draw mode
 	TO_PLAY			//Switch interface to Play mode

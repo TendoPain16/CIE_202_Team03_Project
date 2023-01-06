@@ -12,23 +12,22 @@ opAddLine::~opAddLine()
 {}
 
 
-void opAddLine::Execute()						//Execute the operation
+void opAddLine::Execute()
 {
 	
 	Point P1, P2;
 
-	GUI* pUI = pControl->GetUI();				//Get a Pointer to the Input / Output Interfaces
-	Graph* pGr = pControl->getGraph();			//Get a pointer to the graph
-	/*
+	GUI* pUI = pControl->GetUI();	
+	Graph* pGr = pControl->getGraph();
+
 	pUI->PrintMessage("New Line: Click at first corner");
-	pUI->GetPointClicked(P1.x, P1.y);			//Read 1st corner and store in point P1
+	pUI->GetPointClicked(P1.x, P1.y);
 
 	pUI->PrintMessage("First corner is at (" + to_string(P1.x) + ", " + to_string(P1.y) + " )" + " ... Click at second corner");
-	pUI->GetPointClicked(P2.x, P2.y);			//Read 2nd corner and store in point P2
+	pUI->GetPointClicked(P2.x, P2.y);
 
 	pUI->ClearStatusBar();
 
-	//Preapre all line parameters
 	GfxInfo RectGfxInfo;
 	RectGfxInfo.DrawClr = pUI->getCrntDrawColor();
 	RectGfxInfo.FillClr = pUI->getCrntFillColor();
@@ -37,23 +36,7 @@ void opAddLine::Execute()						//Execute the operation
 	RectGfxInfo.isFilled = false;
 	RectGfxInfo.isSelected = false;
 
-	Line* R = new Line(P1, P2, RectGfxInfo);	//Create a line with the above parameters
+	Line* R = new Line(P1, P2, RectGfxInfo);
+	pGr->Addshape(R);
 
-	
-
-	pGr->Addshape(R);							//Add the line to the list of shapes
-	*/
-
-	int id = stoi(pUI->GetSrting("enter id: "));
-	vector <shape*> list = pGr->GetShapesList();
-	for (auto s : list)
-	{
-		if (s->Get_current_ID()  == id)
-		{
-			if (s->IsSelected() == true)
-				s->SetSelected(false);
-			else
-				s->SetSelected(true);
-		}
-	}
 }

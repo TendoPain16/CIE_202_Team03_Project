@@ -19,6 +19,11 @@ Line::~Line()
 void Line::Draw(GUI* pUI) const
 {
 	pUI->DrawLine(Corner1, Corner2, ShpGfxInfo);	//Call Output::Drawline to draw a line on the screen	
+	if (resizing == true)
+	{
+		pUI->DrawSquareInPoint(Corner1);
+		pUI->DrawSquareInPoint(Corner2);
+	}
 }
 
 
@@ -64,9 +69,66 @@ void Line::Resize(double number)
 	scale_two_points(mid, Corner2, number);
 }
 
-
-vector <shape*> Line::get_shapes_list()
+int Line::is_on_corners(Point x)
 {
-	vector <shape*> null;
-	return null;
+	Point p1;
+	Point p2;
+	vector <Point> list;
+	list.push_back(Corner1);	list.push_back(Corner2);
+	for (int i = 0; i < 2; i++)
+	{
+		p1.x = list[i].x - 5;
+		p1.y = list[i].y - 5;
+		p2.x = list[i].x + 5;
+		p2.y = list[i].y + 5;
+		if (((p1.x >= x.x) && (x.x >= p2.x) && (p1.y >= x.y) && (x.y >= p2.y)) || ((p1.x <= x.x) && (x.x <= p2.x) && (p1.y <= x.y) && (x.y <= p2.y)))
+		{
+			return i + 1;
+		}
+	}
+	return 0;
+}
+
+
+void Line::Resize_By_Drag(int point_number, Point old_point, Point new_point)
+{
+	switch (point_number)
+	{
+	case 1: Corner1 = new_point; break;
+	case 2: Corner2 = new_point; break;
+	}
+}
+
+void Line::Move(Point old_point, Point new_point)
+{
+	int diff_x = new_point.x - old_point.x;
+	int diff_y = new_point.y - old_point.y;
+	Point Center;
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
+}
+
+bool Line::IsPointInside(int x, int y)
+{
+Point P; P.x = x; P.y = y;
+Point P1 = Corner1;
+Point P2 = Corner2;
+
+double area = calc_area_of_triangle(P1, P2, P);
+int distance = sqrt(pow(P1.x - P2.x, 2) + pow(P1.y - P2.y, 2));
+double dist_to_line = area / (distance * 0.5);
+
+if ((P.x >= P1.x && P.y >= P1.y && P.x <= P2.x && P.y <= P2.y) || (P.x >= P2.x && P.y >= P2.y && P.x <= P1.x && P.y <= P1.y))
+{
+	if (dist_to_line <= 10)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+else 
+	return false;
 }

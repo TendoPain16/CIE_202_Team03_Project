@@ -19,13 +19,20 @@ public:
 	~Graph();
 
 	void Addshape(shape* pFig);					//Adds a new shape to the shapesList.
+	void Addshapes(vector <shape*> pFigs);
 	void Draw(GUI* pUI) const;					//Draw the graph (draw all shapes).
+	void Clear_shapeslist();					//clear all shapes.
+	shape* Getshape(int x, int y) const;		//Search for a shape given a point inside the shape.
+
+
+	void change_draw_clr(GUI* pUI, color temp);
 	void Save(ofstream& outfile);				//Save all shapes to a file.
 	void Load(ifstream& inputfile, GUI* pUI);	//Load all shapes from a file.
-	void Clear_shapeslist();					//clear all shapes.
+	void move_shapes(GUI* pUI);
 	void resize(double number);
-	vector <shape*> group_shapes();
-	shape* Getshape(int x, int y) const;		//Search for a shape given a point inside the shape.
+	void Resize_By_Drag(GUI* pUI);
+	void group_shapes();
+	void ungroup_shapes();
+	void select(action temp);
 	vector <shape*> GetShapesList() const;
-	void SetShapesList(vector <shape*> x);
 };

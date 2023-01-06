@@ -117,8 +117,34 @@ void Group::Resize(double number)
 		shapePointer->Resize(number);
 }
 
+int Group::is_on_corners(Point x)
+{
+	if (true)
+	{
+
+	}
+	else
+		return 0;
+}
+
+void Group::Resize_By_Drag(int point_number, Point old_point, Point new_point)
+{
+
+}
+
+void Group::Move(Point old_point, Point new_point)
+{
+	for (auto shapePointer : groupshapesList)
+		shapePointer->Move(old_point,new_point);
+}
+
 
 vector <shape*> Group::get_shapes_list()
 {
 	return groupshapesList;
+}
+
+bool Group::IsPointInside(int x, int y)
+{
+	return false;
 }

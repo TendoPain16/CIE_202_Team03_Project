@@ -19,6 +19,12 @@ Triangle::~Triangle()
 void Triangle::Draw(GUI* pUI) const
 {
 	pUI->DrawTriangle(Corner1, Corner2, Corner3, ShpGfxInfo);	//Call Output::DrawTrinagle to draw a rectangle on the screen	
+	if (resizing  == true)
+	{
+		pUI->DrawSquareInPoint(Corner1);
+		pUI->DrawSquareInPoint(Corner2);
+		pUI->DrawSquareInPoint(Corner3);
+	}
 }
 
 
@@ -81,8 +87,66 @@ void Triangle::Resize(double number)
 	scale_two_points(mid, Corner3, number);
 }
 
-vector <shape*> Triangle::get_shapes_list()
+int Triangle::is_on_corners(Point x)
 {
-	vector <shape*> null;
-	return null;
+	Point p1;
+	Point p2;
+	vector <Point> list;
+	list.push_back(Corner1);	list.push_back(Corner2);	list.push_back(Corner3);
+	for (int i = 0; i < 3; i++)
+	{
+		p1.x = list[i].x - 5;
+		p1.y = list[i].y - 5;
+		p2.x = list[i].x + 5;
+		p2.y = list[i].y + 5;
+		if (((p1.x >= x.x) && (x.x >= p2.x) && (p1.y >= x.y) && (x.y >= p2.y)) || ((p1.x <= x.x) && (x.x <= p2.x) && (p1.y <= x.y) && (x.y <= p2.y)))
+		{
+			return i + 1;
+		}
+	}
+	return 0;
+}
+
+
+void Triangle::Resize_By_Drag(int point_number, Point old_point, Point new_point)
+{
+	switch (point_number)
+	{
+	case 1: Corner1 = new_point; break;
+	case 2: Corner2 = new_point; break;
+	case 3: Corner3 = new_point; break;
+	}
+}
+
+void Triangle::Move(Point old_point, Point new_point)
+{
+	int diff_x = new_point.x - old_point.x;
+	int diff_y = new_point.y - old_point.y;
+
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
+	Corner3.x = Corner3.x + diff_x;
+	Corner3.y = Corner3.y + diff_y;
+}
+
+bool Triangle::IsPointInside(int x, int y)
+{
+	Point temp;
+	temp.x = x;
+	temp.y = y;
+
+	double tri_1 = calc_area_of_triangle(Corner1, Corner2, temp);
+	double tri_2 = calc_area_of_triangle(Corner2, Corner3, temp);
+	double tri_3 = calc_area_of_triangle(Corner3, Corner1, temp);
+
+	double area_of_triangle = calc_area_of_triangle(Corner1, Corner2, Corner3);
+
+	if (area_of_triangle == tri_1 + tri_2 + tri_3)
+	{
+		return true;
+	}
+	else
+		return false;
 }
