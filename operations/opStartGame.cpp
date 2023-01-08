@@ -15,6 +15,6 @@ void opStartGame::Execute()
 	GUI* pUI = pControl->GetUI();
 	Graph* pGr = pControl->getGraph();
 
-	pGr->Start_Game();
+	pGr->Start_Game(pUI);
 
 }

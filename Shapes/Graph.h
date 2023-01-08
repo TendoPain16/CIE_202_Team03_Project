@@ -13,9 +13,9 @@ class Graph			//A class that is responsible on everything related to shapes
 {
 private:
 	vector <shape*> shapesList;		 //a container to hold all shapes				
-	shape* selectedShape;		  	 //pointer to the currently selected shape
-	vector <shape*> play_shapes;
 	vector<Card*> play_cards;
+	vector <shape*> copied_shapes;
+
 
 public:										
 	Graph();
@@ -28,7 +28,9 @@ public:
 	void clear_cards();
 	shape* Getshape(int x, int y) const;		//Search for a shape given a point inside the shape.
 
-
+	void Delete(GUI* pUI);
+	void Exit(GUI* pUI);
+	void change_fill_clr(GUI* pUI, color temp);
 	void change_draw_clr(GUI* pUI, color temp);
 	void Save(ofstream& outfile);				//Save all shapes to a file.
 	void Load(ifstream& inputfile, GUI* pUI);	//Load all shapes from a file.
@@ -40,8 +42,10 @@ public:
 	void Scramble();
 	void Matsh_Shapes(GUI* pUI);
 	void Scramble_shapes_in_play();
-	void Start_Game();
-	void Restart_Game();
+	void Start_Game(GUI* pUI);
+	void Restart_Game(GUI* pUI);
+	void Copy(GUI* pUI);
+	void Paste(GUI* pUI);
 	void ungroup_shapes();
 	void select(action temp);
 	vector <shape*> GetShapesList() const;

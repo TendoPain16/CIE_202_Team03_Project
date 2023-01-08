@@ -13,7 +13,7 @@
 #include "..\shapes\Group.h"
 #include <iostream>
 
-Graph::Graph() {selectedShape = nullptr;}
+Graph::Graph() {}
 
 Graph::~Graph() {}
 
@@ -69,7 +69,13 @@ shape* Graph::Getshape(int x, int y) const
 
 
 void Graph::Clear_shapeslist()
-{shapesList.clear();}
+{
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		delete shapesList[i];
+	}
+	shapesList.clear();
+}
 
 
 void Graph::Save(ofstream& outfile) 
@@ -121,8 +127,20 @@ void Graph::Load(ifstream& inputfile, GUI* pUI)
 void Graph::resize(double number)
 {
 	for (auto shapePointer : shapesList)
+	{
 		if (shapePointer->IsSelected())
+		{
 			shapePointer->Resize(number);
+
+			for (int i = 0; i < shapesList.size(); i++)
+			{
+				if ((shapePointer != shapesList[i]) && (shapePointer->check_id(shapesList[i])))
+				{
+					shapesList[i]->Resize(number);
+				}
+			}
+		}
+	}
 }
 
 void Graph::group_shapes()
@@ -274,7 +292,7 @@ void Graph::move_shapes(GUI* pUI)
 						}
 						else
 						{
-							shapesList[x]->Move(old_mouse_location, mouse_location);
+							shapesList[x]->Move(old_mouse_location,mouse_location);
 							old_mouse_location.x = mouse_location.x;
 							old_mouse_location.y = mouse_location.y;
 						}
@@ -415,6 +433,16 @@ void Graph::change_draw_clr(GUI* pUI,color temp)
 		{
 			shapesList[i]->ChngDrawClr(temp);
 			counter++;
+
+			for (int k = 0; k < shapesList.size(); k++)
+			{
+				if ((shapesList[i] != shapesList[k]) && (shapesList[i]->check_id(shapesList[k])))
+				{
+					shapesList[k]->ChngDrawClr(temp);
+				}
+			}
+
+
 		}
 	}
 
@@ -424,6 +452,74 @@ void Graph::change_draw_clr(GUI* pUI,color temp)
 	pUI->SetCrntDrawColor(temp);
 
 }
+
+
+void Graph::change_fill_clr(GUI* pUI, color temp)
+{
+	int counter = 0;
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		if (shapesList[i]->IsSelected())
+		{
+			shapesList[i]->ChngFillClr(temp);
+			counter++;
+
+			for (int k = 0; k < shapesList.size(); k++)
+			{
+				if ((shapesList[i] != shapesList[k]) && (shapesList[i]->check_id(shapesList[k])))
+				{
+					shapesList[k]->ChngFillClr(temp);
+				}
+			}
+
+
+		}
+	}
+
+	if (counter != 0)
+		return;
+
+	pUI->SerCrntfillColor(temp);
+
+}
+
+void Graph::Delete(GUI* pUI)
+{
+	vector <int> to_be_deleted;
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		if (shapesList[i]->IsSelected())
+		{
+			delete shapesList[i];
+			to_be_deleted.push_back(i);
+		}
+	}
+
+	for (auto x : to_be_deleted)
+	{
+		shapesList.erase(shapesList.begin() + x);
+		for (int i = 0; i < to_be_deleted.size(); i++)
+		{
+			to_be_deleted[i] = to_be_deleted[i] - 1;
+		}
+	}
+
+}
+
+void Graph::Exit(GUI* pUI)
+{
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		delete shapesList[i];
+	}
+	for (int i = 0; i < play_cards.size(); i++)
+	{
+		delete play_cards[i];
+	}
+	shapesList.clear();
+	play_cards.clear();
+}
+
 
 void Graph::Scramble()
 {
@@ -463,6 +559,7 @@ void Graph::Scramble_shapes_in_play()
 
 void Graph::Matsh_Shapes(GUI* pUI)
 {
+	static int score = 0;
 	action temp = pUI->Get_current_action_info();
 	int counter = 0;
 	Card* c1;
@@ -488,8 +585,6 @@ void Graph::Matsh_Shapes(GUI* pUI)
 		return;
 	}
 
-	pUI->PrintMessage("first card clicked pick a second card");
-
 	Point t;
 	pUI->GetPointClicked(t.x,t.y);
 	bool r = false;
@@ -497,7 +592,7 @@ void Graph::Matsh_Shapes(GUI* pUI)
 	{
 		for (int i = 0; i < play_cards.size(); i++)
 		{
-			if (play_cards[i]->IsPointInside(t.x, t.y))
+			if (play_cards[i]->IsPointInside(t.x, t.y) && play_cards[i] != c1)
 			{
 				play_cards[i]->set_covered(false);
 				Draw(pUI);
@@ -518,12 +613,12 @@ void Graph::Matsh_Shapes(GUI* pUI)
 	if (c1->check_card(c2))
 	{
 		Sleep(1000);
-		pUI->PrintMessage("Good");
+		score += 3;
+		pUI->PrintMessage("Score: " + to_string(score) + "   Good Job.");
 		delete play_cards[c_1];
 		delete play_cards[c_2];
 
 		play_cards.erase(play_cards.begin() + c_1);
-
 		if (c_1 > c_2)
 		{
 			play_cards.erase(play_cards.begin() + c_2);
@@ -532,6 +627,10 @@ void Graph::Matsh_Shapes(GUI* pUI)
 		{
 			play_cards.erase(play_cards.begin() + (c_2 - 1));
 		}
+		if (play_cards.size() == 0)
+		{
+			score = 0;
+		}
 
 	}
 	else
@@ -539,11 +638,79 @@ void Graph::Matsh_Shapes(GUI* pUI)
 		Sleep(1000);
 		c1->set_covered(true);
 		c2->set_covered(true);
-		pUI->PrintMessage("try again");
+		score += 1;
+		pUI->PrintMessage("Score: " + to_string(score) + "   Try Again.");
 	}
 
 
 
+
+}
+
+
+void Graph::Paste(GUI* pUI)
+{
+	Point t;
+	pUI->GetPointClicked(t.x, t.y);
+
+	for (int j = 0; j < copied_shapes.size(); j++)
+	{
+		shape* temp;
+		if (dynamic_cast<Rect*> (copied_shapes[j]))
+		{
+			Rect* x = dynamic_cast<Rect*> (copied_shapes[j]);
+			temp = new Rect(x);
+		}
+		else if (dynamic_cast<Square*> (copied_shapes[j]))
+		{
+			Square* x = dynamic_cast<Square*> (copied_shapes[j]);
+			temp = new Square(x);
+		}
+		else if (dynamic_cast<Line*> (copied_shapes[j]))
+		{
+			Line* x = dynamic_cast<Line*> (copied_shapes[j]);
+			temp = new Line(x);
+		}
+		else if (dynamic_cast<Triangle*> (copied_shapes[j]))
+		{
+			Triangle* x = dynamic_cast<Triangle*> (copied_shapes[j]);
+			temp = new Triangle(x);
+		}
+		else if (dynamic_cast<Circle*> (copied_shapes[j]))
+		{
+			Circle* x = dynamic_cast<Circle*> (copied_shapes[j]);
+			temp = new Circle(x);
+		}
+		else if (dynamic_cast<Group*> (copied_shapes[j]))
+		{
+			Group* x = dynamic_cast<Group*> (copied_shapes[j]);
+			temp = new Group(x);
+		}
+		else if (dynamic_cast<IrregularPolygon*> (copied_shapes[j]))
+		{
+			IrregularPolygon* x = dynamic_cast<IrregularPolygon*> (copied_shapes[j]);
+			temp = new IrregularPolygon(x);
+		}
+
+		shapesList.push_back(temp);
+		temp->move_to_center(t);
+	}
+}
+
+
+
+void Graph::Copy(GUI* pUI)
+{
+	copied_shapes.clear();
+
+	int num = shapesList.size();
+	for (int i = 0; i < num; i++)
+	{
+		if (shapesList[i]->IsSelected())
+		{
+			copied_shapes.push_back(shapesList[i]);
+		}
+	}
 
 }
 
@@ -614,8 +781,10 @@ void Graph::clear_cards()
 	play_cards.clear();
 }
 
-void Graph::Start_Game()
+void Graph::Start_Game(GUI* pUI)
 {
+	int score = 0;
+	pUI->PrintMessage("Score: " + to_string(score));
 	if (play_cards.size() == 0)
 	{
 		Dublicate();
@@ -638,13 +807,17 @@ void Graph::Start_Game()
 				p1.x = 350;
 			}
 			x.push_back(p1);
+			if (play_cards.size() == 24)
+			{
+				break;
+			}
 		}
 	}
 }
 
-void Graph::Restart_Game()
+void Graph::Restart_Game(GUI* pUI)
 {
 	clear_cards();
-	Start_Game();
+	Start_Game(pUI);
 }
 

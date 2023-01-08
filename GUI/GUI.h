@@ -179,9 +179,11 @@ public:
 	int getCrntPenWidth() const;		//get current pen width
 	void Get_action();
 
+	void draw_string(int x, int y, string temp);
 	GUI_MODE get_current_mode();
 	void SetCrntMode(GUI_MODE x);		//set current mode
 	void SetCrntDrawColor(color x);		//set current draw color
+	void SerCrntfillColor(color x);
 	action Get_current_action_info() const;
 	buttonstate get_mouse_state(int& x, int& y);
 	keytype get_key(char& x);

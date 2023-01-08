@@ -62,6 +62,11 @@ keytype GUI::get_key(char& x)
 	return pWind->GetKeyPress(x);
 }
 
+void GUI::draw_string(int x , int y ,string temp)
+{
+	pWind->DrawString(x, y, temp);
+}
+
 GUI_MODE GUI::get_current_mode()
 {
 	return InterfaceMode;
@@ -70,6 +75,11 @@ GUI_MODE GUI::get_current_mode()
 void GUI::update_buffer()
 {
 	pWind->UpdateBuffer();
+}
+
+void GUI::SerCrntfillColor(color x)
+{
+	FillColor = x;
 }
 
 string GUI::GetSrting(string message) const

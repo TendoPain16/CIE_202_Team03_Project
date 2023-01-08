@@ -16,6 +16,6 @@ void opRestartGame::Execute()
 	Graph* pGr = pControl->getGraph();
 
 
-	pGr->Restart_Game();
+	pGr->Restart_Game(pUI);
 	pUI->PrintMessage("Restarted");
 }

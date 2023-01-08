@@ -7,11 +7,11 @@
 #include "operations\opAddIrregularPolygon.h"
 #include "operations\opChngDrawClr.h"
 #include "operations\opSelect.h"
-//#include "operations\opChngFillClr.h"
-//#include "operations\opDelete.h"
-//#include "operations\opCopy.h"
-//#include "operations\opPaste.h"
-//#include "operations\opExit.h"
+#include "operations\opChngFillClr.h"
+#include "operations\opDelete.h"
+#include "operations\opCopy.h"
+#include "operations\opPaste.h"
+#include "operations\opExit.h"
 #include "operations\opScramble.h"
 //#include "operations\opHide.h"
 //#include "operations\opUnhide.h"
@@ -86,7 +86,7 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case CHNG_FILL_CLR:
-	//	pOp = new opChngFillClr(this);
+		pOp = new opChngFillClr(this);
 		break;
 
 	case SELECT:
@@ -94,7 +94,7 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case DEL:
-	//	pOp = new opDelete(this);
+		pOp = new opDelete(this);
 		break;
 
 	case TO_PLAY:
@@ -122,11 +122,11 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case COPY:
-	//	pOp = new opCopy(this);
+		pOp = new opCopy(this);
 		break;
 
 	case PASTE:
-	//	pOp = new opPaste(this);
+		pOp = new opPaste(this);
 		break;
 
 	case DUPLICAT:
@@ -150,7 +150,7 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case EXIT:
-	//	pOp = new opExit(this);
+		pOp = new opExit(this);
 		break;
 
 	case START_GAME:
@@ -232,6 +232,10 @@ void controller::Run()
 		 
 		if (pOpr) {										//3. Execute the created operation
 			pOpr->Execute();
+			if (dynamic_cast<opExit*> (pOpr))
+			{
+				break;
+			}
 			delete pOpr;
 			pOpr = nullptr;
 		}
