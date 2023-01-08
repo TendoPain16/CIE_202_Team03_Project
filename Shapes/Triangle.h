@@ -9,6 +9,7 @@ private:
 	Point Corner2; Point Corner3;
 public:
 	Triangle();
+	Triangle(Triangle* x);
 	Triangle(Point, Point,Point, GfxInfo shapeGfxInfo);
 	virtual ~Triangle();
 	virtual void Draw(GUI* pUI) const;
@@ -19,5 +20,9 @@ public:
 	virtual int is_on_corners(Point x);
 	virtual void Resize_By_Drag(int point_number, Point old_point, Point new_point);
 	virtual bool IsPointInside(int x, int y);
+	virtual void save_shape_points();
+	virtual void load_shape_points();
+	virtual bool is_shape_between_two_corners(Point p1, Point p2);
+	virtual void move_to_center(Point new_center);
 };
 

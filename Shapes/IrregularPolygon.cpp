@@ -12,6 +12,17 @@ IrregularPolygon::IrregularPolygon(vector <Point> Points, int V_number, GfxInfo 
 	ShpGfxInfo = shapeGfxInfo;
 }
 
+IrregularPolygon::IrregularPolygon(IrregularPolygon* x)
+{
+	for (int i = 0; i < (x->Points).size(); i++)
+	{
+		this->Points.push_back((x->Points)[i]);
+	}
+	this->V_number = x->V_number;
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
 
 IrregularPolygon::~IrregularPolygon()
 {}
@@ -150,4 +161,56 @@ void IrregularPolygon::Move(Point old_point, Point new_point)
 bool IrregularPolygon::IsPointInside(int x, int y)
 {
 	return false;
+}
+
+
+void IrregularPolygon::save_shape_points()
+{
+	for (int i = 0; i < Points.size(); i++)
+	{
+		shape_points.push_back(Points[i]);
+	}
+}
+void IrregularPolygon::load_shape_points()
+{
+	for (int i = 0; i < shape_points.size(); i++)
+	{
+		Points[i] = shape_points[i];
+	}
+}
+bool IrregularPolygon::is_shape_between_two_corners(Point p1, Point p2)
+{
+	for (int i = 0; i < Points.size(); i++)
+	{
+		if (is_point_inside_rect(p1,p2,Points[i]) == false)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+void IrregularPolygon::move_to_center(Point new_center)
+{
+	Point Center;
+
+	int x_sum = 0;
+	int y_sum = 0;
+	for (auto temp : Points)
+	{
+		x_sum = x_sum + temp.x;
+		y_sum = y_sum + temp.y;
+	}
+
+	Center.x = x_sum / Points.size();
+	Center.y = y_sum / Points.size();
+
+	int diff_x = new_center.x - Center.x;
+	int diff_y = new_center.y - Center.y;
+
+	for (int i = 0; i < Points.size(); i++)
+	{
+		Points[i].x = Points[i].x + diff_x;
+		Points[i].y = Points[i].y + diff_y;
+	}
 }

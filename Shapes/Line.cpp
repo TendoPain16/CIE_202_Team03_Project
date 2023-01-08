@@ -11,7 +11,14 @@ Line::Line(Point P1, Point P2, GfxInfo shapeGfxInfo) :shape(shapeGfxInfo)
 	Corner2 = P2;
 }
 
-
+Line::Line(Line* x)
+{
+	this->Corner1 = x->Corner1;
+	this->Corner2 = x->Corner2;
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
 
 Line::~Line()
 {}
@@ -122,7 +129,7 @@ double dist_to_line = area / (distance * 0.5);
 
 if ((P.x >= P1.x && P.y >= P1.y && P.x <= P2.x && P.y <= P2.y) || (P.x >= P2.x && P.y >= P2.y && P.x <= P1.x && P.y <= P1.y))
 {
-	if (dist_to_line <= 10)
+	if (dist_to_line <= 20)
 	{
 		return true;
 	}
@@ -131,4 +138,42 @@ if ((P.x >= P1.x && P.y >= P1.y && P.x <= P2.x && P.y <= P2.y) || (P.x >= P2.x &
 }
 else 
 	return false;
+}
+
+
+void Line::save_shape_points()
+{
+	shape_points.push_back(Corner1);
+	shape_points.push_back(Corner2);
+}
+void Line::load_shape_points()
+{
+	Corner1 = shape_points[0];
+	Corner2 = shape_points[1];
+}
+bool Line::is_shape_between_two_corners(Point p1, Point p2)
+{
+	bool x = is_point_inside_rect(p1, p2, Corner1);
+	bool y = is_point_inside_rect(p1, p2, Corner2);
+	if (x && y)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+void Line::move_to_center(Point new_center)
+{
+	Point Center;
+	Center.x = (Corner1.x + Corner2.x) / 2;
+	Center.y = (Corner1.y + Corner2.y) / 2;
+
+	int diff_x = new_center.x - Center.x;
+	int diff_y = new_center.y - Center.y;
+
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
 }

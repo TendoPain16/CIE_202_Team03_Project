@@ -103,10 +103,12 @@ enum DrawMenuIcon //The icons of the Draw menu (you should add more icons)
 
 enum PlayMenuIcon //The icons of the Play menu (you should add more icons)
 {
-	//Note: Icons are ordered here as they appear in menu
-	//If you want to change the menu icons order, change the order here
-
-	//TODO: Add more icons names here
+	ICON_PLAY,
+	ICON_RESTART,
+	ICON_HIDE,
+	ICON_UNHIDE,
+	ICON_TO_DRAW,
+	ICON_PEXIT,
 
 	PLAY_ICON_COUNT		//no. of menu icons ==> This should be the last line in this enum
 
@@ -177,6 +179,7 @@ public:
 	int getCrntPenWidth() const;		//get current pen width
 	void Get_action();
 
+	GUI_MODE get_current_mode();
 	void SetCrntMode(GUI_MODE x);		//set current mode
 	void SetCrntDrawColor(color x);		//set current draw color
 	action Get_current_action_info() const;
@@ -186,7 +189,7 @@ public:
 	void flushQueue();
 	void set_Buffering(bool x);
 	void update_buffer();
-
+	void create_bar();
 
 	~GUI();
 };

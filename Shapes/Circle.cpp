@@ -11,7 +11,14 @@ Circle::Circle(Point P1, Point P2, GfxInfo shapeGfxInfo) :shape(shapeGfxInfo)
 	Radius = P2;
 }
 
-
+Circle::Circle(Circle* x)
+{
+	this->Center = x->Center;
+	this->Radius = x->Radius;
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
 
 Circle::~Circle()
 {}
@@ -143,4 +150,37 @@ bool Circle::IsPointInside(int x, int y)
 	}
 	else
 		return false;
+}
+
+void Circle::save_shape_points()
+{
+	shape_points.push_back(Center);
+	shape_points.push_back(Radius);
+}
+void Circle::load_shape_points()
+{
+	Center = shape_points[0];
+	Radius = shape_points[1];
+}
+bool Circle::is_shape_between_two_corners(Point p1, Point p2)
+{
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	int dist_x = abs(p1.x - p2.x);
+	int dist_y = abs(p1.y - p2.y);
+	if ((2 * rad >= dist_x) || (2 * rad >= dist_y))
+	{
+		return false;
+	}
+	return true;
+}
+void Circle::move_to_center(Point new_center)
+{
+	int rad = sqrt(pow(Center.x - Radius.x, 2) + pow(Center.y - Radius.y, 2));
+	int diff_x = new_center.x - Center.x;
+	int diff_y = new_center.y - Center.y;
+
+	Center.x = Center.x + diff_x;
+	Center.y = Center.y + diff_y;
+	Radius.x = Center.x + rad;
+	Radius.y = Center.y;
 }

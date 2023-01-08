@@ -62,6 +62,11 @@ keytype GUI::get_key(char& x)
 	return pWind->GetKeyPress(x);
 }
 
+GUI_MODE GUI::get_current_mode()
+{
+	return InterfaceMode;
+}
+
 void GUI::update_buffer()
 {
 	pWind->UpdateBuffer();
@@ -234,6 +239,14 @@ operationType GUI::GetUseroperation()
 		{
 			return RESIZE_BY_DRAG;
 		}
+		else if ((temp.get_key_pressed() == 'd') || (temp.get_key_pressed() == 'D')) //resize by drag
+		{
+			return DUPLICAT;
+		}
+		else if ((temp.get_key_pressed() == 's') || (temp.get_key_pressed() == 'S')) //resize by drag
+		{
+			return SCRAMBLE;
+		}
 		else if ((temp.get_key_pressed() == 3)) //copy
 		{
 			return COPY;
@@ -255,11 +268,12 @@ operationType GUI::GetUseroperation()
 
 				switch (ClickedIconOrder)
 				{
-				case 0/*ICON*/:				return START_GAME;
-				case 1/*ICON*/:				return RESTART_GAME;
-				case 2/*ICON*/:				return HIDE;
-				case 3/*ICON*/:				return UNHIDE;
-				case 4/*ICON*/:				return EXIT;
+				case ICON_PLAY:				return START_GAME;
+				case ICON_RESTART:			return RESTART_GAME;
+				case ICON_HIDE:				return HIDE;
+				case ICON_UNHIDE:			return UNHIDE;
+				case ICON_TO_DRAW:			return TO_DRAW;
+				case ICON_PEXIT:				return EXIT;
 				default: return EMPTY;
 				}
 			}
@@ -350,7 +364,27 @@ void GUI::CreateDrawToolBar()
 void GUI::CreatePlayToolBar() 
 {
 	InterfaceMode = MODE_PLAY;
-	///TODO: write code to create Play mode menu
+
+
+	string MenuIconImages[PLAY_ICON_COUNT];
+	MenuIconImages[ICON_PLAY] = "images\\MenuIcons\\Menu_Play.jpg";
+	MenuIconImages[ICON_RESTART] = "images\\MenuIcons\\Menu_Restart.jpg";
+	MenuIconImages[ICON_HIDE] = "images\\MenuIcons\\Menu_Hide.jpg";
+	MenuIconImages[ICON_UNHIDE] = "images\\MenuIcons\\Menu_Unhide.jpg";
+	MenuIconImages[ICON_TO_DRAW] = "images\\MenuIcons\\Menu_Pen.jpg";
+	MenuIconImages[ICON_PEXIT] = "images\\MenuIcons\\Menu_Exit.jpg";
+
+	//TODO: Prepare images for each menu icon and add it to the list
+	pWind->SetBrush(WHITE);
+	pWind->SetPen(WHITE);
+	pWind->DrawRectangle(0, 0, pWind->GetWidth(), ToolBarHeight);
+	//Draw menu icon one image at a time
+	for (int i = 0; i < PLAY_ICON_COUNT; i++)
+		pWind->DrawImage(MenuIconImages[i], i * MenuIconWidth, 0, MenuIconWidth, ToolBarHeight);
+
+	//Draw a line under the toolbar
+	pWind->SetPen(RED, 3);
+	pWind->DrawLine(0, ToolBarHeight, width, ToolBarHeight);
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -387,7 +421,17 @@ color GUI::GetColor() const
 }
 
 
-
+void GUI::create_bar()
+{
+	if (InterfaceMode == MODE_DRAW)
+	{
+		CreateDrawToolBar();
+	}
+	else
+	{
+		CreatePlayToolBar();
+	}
+}
 /// /////////////////////////////////////////////////////////////////////////////////////
 
 color GUI::getCrntDrawColor() const	//get current drwawing color

@@ -16,6 +16,17 @@ Square::Square(Point P1, Point P2, GfxInfo shapeGfxInfo) :shape(shapeGfxInfo)
 	Corner4.y = P2.y;
 }
 
+Square::Square(Square* x)
+{
+	this->Corner1 = x->Corner1;
+	this->Corner2 = x->Corner2;
+	this->Corner3 = x->Corner3;
+	this->Corner4 = x->Corner4;
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
+
 
 
 Square::~Square()
@@ -192,3 +203,46 @@ bool Square::IsPointInside(int x, int y)
 		return false;
 }
 
+void Square::save_shape_points()
+{
+	shape_points.push_back(Corner1);
+	shape_points.push_back(Corner2);
+	shape_points.push_back(Corner3);
+	shape_points.push_back(Corner4);
+}
+void Square::load_shape_points()
+{
+	Corner1 = shape_points[0];
+	Corner2 = shape_points[1];
+	Corner3 = shape_points[2];
+	Corner4 = shape_points[3];
+}
+bool Square::is_shape_between_two_corners(Point p1, Point p2)
+{
+	bool x = is_point_inside_rect(p1, p2, Corner1);
+	bool y = is_point_inside_rect(p1, p2, Corner2);
+	if (x && y)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+void Square::move_to_center(Point new_center)
+{
+	Point Center;
+	Center.x = (Corner1.x + Corner2.x) / 2;
+	Center.y = (Corner1.y + Corner2.y) / 2;
+
+	int diff_x = new_center.x - Center.x;
+	int diff_y = new_center.y - Center.y;
+
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
+	Corner3.x = Corner3.x + diff_x;
+	Corner3.y = Corner3.y + diff_y;
+	Corner4.x = Corner4.x + diff_x;
+	Corner4.y = Corner4.y + diff_y;
+}

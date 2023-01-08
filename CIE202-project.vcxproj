@@ -196,6 +196,7 @@
     <ClCompile Include="operations\opToPlay.cpp" />
     <ClCompile Include="operations\opUnGroupShapes.cpp" />
     <ClCompile Include="operations\opUnhide.cpp" />
+    <ClCompile Include="Shapes\Card.cpp" />
     <ClCompile Include="Shapes\Circle.cpp" />
     <ClCompile Include="Shapes\Graph.cpp" />
     <ClCompile Include="Shapes\Group.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="operations\opUnGroupShapes.h" />
     <ClInclude Include="operations\opUnhide.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Shapes\Card.h" />
     <ClInclude Include="Shapes\Circle.h" />
     <ClInclude Include="Shapes\Graph.h" />
     <ClInclude Include="Shapes\Group.h" />

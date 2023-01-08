@@ -6,24 +6,21 @@
 #include "operations\opAddTriangle.h"
 #include "operations\opAddIrregularPolygon.h"
 #include "operations\opChngDrawClr.h"
-//#include "operations\opChngFillClr.h"
 #include "operations\opSelect.h"
+//#include "operations\opChngFillClr.h"
 //#include "operations\opDelete.h"
 //#include "operations\opCopy.h"
 //#include "operations\opPaste.h"
-//#include "operations\opDublicate.h"
 //#include "operations\opExit.h"
-//#include "operations\opStartGame.h"
-//#include "operations\opRestartGame.h"
-#include "operations\opMove.h"
-//#include "operations\opScramble.h"
-#include "operations\opResizeByDrag.h"
+#include "operations\opScramble.h"
 //#include "operations\opHide.h"
 //#include "operations\opUnhide.h"
-//#include "operations\opMatchShapes.h"
-
-
-
+#include "operations\opMatchShapes.h"
+#include "operations\opMove.h"
+#include "operations\opResizeByDrag.h"
+#include "operations\opStartGame.h"
+#include "operations\opRestartGame.h"
+#include "operations\opDublicate.h"
 #include "operations\opToPlay.h"
 #include "operations\opToDraw.h"
 #include "operations\opSave.h"
@@ -133,11 +130,11 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case DUPLICAT:
-	//	pOp = new opDublicate(this);
+		pOp = new opDublicate(this);
 		break;
 
 	case SCRAMBLE:
-	//	pOp = new opScramble(this);
+		pOp = new opScramble(this);
 		break;
 
 	case RESIZE_BY_DRAG:
@@ -157,11 +154,11 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case START_GAME:
-	//	pOp = new opStartGame(this);
+		pOp = new opStartGame(this);
 		break;
 
 	case RESTART_GAME:
-	//	pOp = new opRestartGame(this);
+		pOp = new opRestartGame(this);
 		break;
 
 	case HIDE:
@@ -173,7 +170,7 @@ operation* controller::createOperation(operationType OpType)	//Creates an operat
 		break;
 
 	case MATCH_SHAPES:
-	//	pOp = new opMatchShapes(this);
+		pOp = new opMatchShapes(this);
 		break;
 
 	case STATUS:

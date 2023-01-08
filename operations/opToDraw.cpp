@@ -14,9 +14,11 @@ void opToDraw::Execute()
 {
 	//Get a Pointer to the Input / Output Interfaces
 	GUI* pUI = pControl->GetUI();
+	Graph* pGr = pControl->getGraph();
 	pUI->SetCrntMode(MODE_DRAW);
 	pUI->ClearStatusBar();
 	pUI->ClearDrawArea();
 	pUI->CreateDrawToolBar();
 	pUI->PrintMessage("Welcome To Draw Mode ^_^");
+	pGr->clear_cards();
 }

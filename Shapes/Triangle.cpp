@@ -12,6 +12,15 @@ Triangle::Triangle(Point P1, Point P2,Point P3, GfxInfo shapeGfxInfo) :shape(sha
 	Corner3 = P3;
 }
 
+Triangle::Triangle(Triangle* x)
+{
+	this->Corner1 = x->Corner1;
+	this->Corner2 = x->Corner2;
+	this->Corner3 = x->Corner3;
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
 
 Triangle::~Triangle()
 {}
@@ -149,4 +158,47 @@ bool Triangle::IsPointInside(int x, int y)
 	}
 	else
 		return false;
+}
+
+
+void Triangle::save_shape_points()
+{
+	shape_points.push_back(Corner1);
+	shape_points.push_back(Corner2);
+	shape_points.push_back(Corner3);
+}
+void Triangle::load_shape_points()
+{
+	Corner1 = shape_points[0];
+	Corner2 = shape_points[1];
+	Corner3 = shape_points[2];
+}
+bool Triangle::is_shape_between_two_corners(Point p1, Point p2)
+{
+	bool x = is_point_inside_rect(p1, p2, Corner1);
+	bool y = is_point_inside_rect(p1, p2, Corner2);
+	bool z = is_point_inside_rect(p1, p2, Corner3);
+	if (x && y && z)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+
+void Triangle::move_to_center(Point new_center)
+{
+	Point Center;
+	Center.x = (Corner1.x + Corner2.x + Corner3.x) / 3;
+	Center.y = (Corner1.y + Corner2.y + Corner3.y) / 3;
+
+	int diff_x = new_center.x - Center.x;
+	int diff_y = new_center.y - Center.y;
+
+	Corner1.x = Corner1.x + diff_x;
+	Corner1.y = Corner1.y + diff_y;
+	Corner2.x = Corner2.x + diff_x;
+	Corner2.y = Corner2.y + diff_y;
+	Corner3.x = Corner3.x + diff_x;
+	Corner3.y = Corner3.y + diff_y;
 }

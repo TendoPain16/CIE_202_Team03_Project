@@ -38,15 +38,20 @@ void Graph::Addshapes(vector <shape*> pFigs)
 
 void Graph::Draw(GUI* pUI) const	//Draw all shapes on the user interface
 {
-	for (int i = 0; i < shapesList.size(); i++)
-	{
-		cout << shapesList[i]->Get_current_ID() << "  ";
-	}
-	cout << endl;
 	pUI->ClearDrawArea();
-	for (auto shapePointer : shapesList)
-		shapePointer->Draw(pUI);
-	pUI->CreateDrawToolBar();
+	if (pUI->get_current_mode() == MODE_DRAW)
+	{
+		for (auto shapePointer : shapesList)
+			shapePointer->Draw(pUI);
+	}
+	else
+	{
+		for (auto card : play_cards)
+		{
+			card->Draw(pUI);
+		}
+	}
+	pUI->create_bar();
 }
 
 
@@ -191,19 +196,6 @@ void Graph::ungroup_shapes()
 			groups_to_be_deleted[i] = groups_to_be_deleted[i] - 1;
 		}
 	}
-
-	for (int i = 0; i < shapesList.size(); i++)
-	{
-		for (int j = i + 1; j < shapesList.size(); j++)
-		{
-			if (shapesList[i]->Get_current_ID() > shapesList[j]->Get_current_ID())
-			{
-				shape* temp = shapesList[i];
-				shapesList[i] = shapesList[j];
-				shapesList[j] = temp;
-			}
-		}
-	}
 }
 
 
@@ -223,7 +215,7 @@ void Graph::move_shapes(GUI* pUI)
 	Point mouse_location;
 	Point old_mouse_location;
 	char cKeyData;
-
+	bool selected = false;
 	int x = -1;
 	// Loop until there escape is pressed
 	while (pUI->get_key(cKeyData) != ESCAPE)
@@ -238,11 +230,12 @@ void Graph::move_shapes(GUI* pUI)
 		{
 			if (pUI->get_mouse_state(mouse_location.x, mouse_location.y) == BUTTON_DOWN) //if mouse is clicked
 			{
-				for (int i = 0; i < shapesList.size(); i++)
+				for (int i = shapesList.size() - 1; i >= 0; i--)
 				{
 					if (shapesList[i]->IsPointInside(mouse_location.x,mouse_location.y))
 					{
 						bDragging = true;
+						selected = shapesList[i]->IsSelected();
 						old_mouse_location.x = mouse_location.x;
 						old_mouse_location.y = mouse_location.y;
 						x = i;
@@ -266,9 +259,25 @@ void Graph::move_shapes(GUI* pUI)
 				{
 					if (x != -1)
 					{
-						shapesList[x]->Move(old_mouse_location, mouse_location);
-						old_mouse_location.x = mouse_location.x;
-						old_mouse_location.y = mouse_location.y;
+						if (selected == true)
+						{
+							for (int j = 0; j < shapesList.size(); j++)
+							{
+								if (shapesList[j]->IsSelected())
+								{
+
+									shapesList[j]->Move(old_mouse_location, mouse_location);
+								}
+							}
+							old_mouse_location.x = mouse_location.x;
+							old_mouse_location.y = mouse_location.y;
+						}
+						else
+						{
+							shapesList[x]->Move(old_mouse_location, mouse_location);
+							old_mouse_location.x = mouse_location.x;
+							old_mouse_location.y = mouse_location.y;
+						}
 					}
 				}
 			}
@@ -404,7 +413,7 @@ void Graph::change_draw_clr(GUI* pUI,color temp)
 	{
 		if (shapesList[i]->IsSelected())
 		{
-			shapesList[i]->ChngFillClr(temp);
+			shapesList[i]->ChngDrawClr(temp);
 			counter++;
 		}
 	}
@@ -415,3 +424,227 @@ void Graph::change_draw_clr(GUI* pUI,color temp)
 	pUI->SetCrntDrawColor(temp);
 
 }
+
+void Graph::Scramble()
+{
+	srand(time(0));
+	Point temp;
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		temp.x = (rand() % (1200 - 100 + 1)) + 100;
+		temp.y = (rand() % (600 - 150+1)) + 50;
+
+		shapesList[i]->move_to_center(temp);
+	}
+}
+
+void Graph::Scramble_shapes_in_play()
+{
+	vector<shape*> temp;
+	for (int i = 0; i < shapesList.size(); i++)
+	{
+		temp.push_back(shapesList[i]);
+	}
+
+	vector<int> done;
+	int number = temp.size();
+	srand(time(0));
+	for (int i = 0; i < temp.size(); i++)
+	{
+		int random = rand() % number;
+		while (std::count(done.begin(),done.end(),random))
+		{
+			random = rand() % number;
+		}
+		shapesList[random] = temp[i];
+		done.push_back(random);
+	}
+}
+
+void Graph::Matsh_Shapes(GUI* pUI)
+{
+	action temp = pUI->Get_current_action_info();
+	int counter = 0;
+	Card* c1;
+	Card* c2;
+	int c_1;
+	int c_2;
+
+	for (int i = 0; i < play_cards.size(); i++)
+	{
+		if (play_cards[i]->IsPointInside(temp.Get_Point().x,temp.Get_Point().y ))
+		{
+			play_cards[i]->set_covered(false);
+			Draw(pUI);
+			c1 = play_cards[i];
+			c_1 = i;
+			counter++;
+			break;
+		}
+	}
+
+	if (counter == 0)
+	{
+		return;
+	}
+
+	pUI->PrintMessage("first card clicked pick a second card");
+
+	Point t;
+	pUI->GetPointClicked(t.x,t.y);
+	bool r = false;
+	while (r == false)
+	{
+		for (int i = 0; i < play_cards.size(); i++)
+		{
+			if (play_cards[i]->IsPointInside(t.x, t.y))
+			{
+				play_cards[i]->set_covered(false);
+				Draw(pUI);
+				c2 = play_cards[i];
+				r = true;
+				c_2 = i;
+				break;
+			}
+		}
+		if (r == true)
+		{
+			break;
+		}
+		pUI->GetPointClicked(t.x, t.y);
+	}
+
+
+	if (c1->check_card(c2))
+	{
+		Sleep(1000);
+		pUI->PrintMessage("Good");
+		delete play_cards[c_1];
+		delete play_cards[c_2];
+
+		play_cards.erase(play_cards.begin() + c_1);
+
+		if (c_1 > c_2)
+		{
+			play_cards.erase(play_cards.begin() + c_2);
+		}
+		else
+		{
+			play_cards.erase(play_cards.begin() + (c_2 - 1));
+		}
+
+	}
+	else
+	{
+		Sleep(1000);
+		c1->set_covered(true);
+		c2->set_covered(true);
+		pUI->PrintMessage("try again");
+	}
+
+
+
+
+}
+
+void Graph::Dublicate()
+{
+	shape* temp;
+	int num = shapesList.size();
+	int y = 0;
+	for (int i = 0; i < num; i++)
+	{
+		for (int j = 0; j < shapesList.size(); j++)
+		{
+			if (shapesList[i]->check_id(shapesList[j]) && (i != j))
+			{
+				y = 1;
+			}
+		}
+		if (y == 0)
+		{
+			if (dynamic_cast<Rect*> (shapesList[i]))
+			{
+				Rect* x = dynamic_cast<Rect*> (shapesList[i]);
+				temp = new Rect(x);
+			}
+			else if (dynamic_cast<Square*> (shapesList[i]))
+			{
+				Square* x = dynamic_cast<Square*> (shapesList[i]);
+				temp = new Square(x);
+			}
+			else if (dynamic_cast<Line*> (shapesList[i]))
+			{
+				Line* x = dynamic_cast<Line*> (shapesList[i]);
+				temp = new Line(x);
+			}
+			else if (dynamic_cast<Triangle*> (shapesList[i]))
+			{
+				Triangle* x = dynamic_cast<Triangle*> (shapesList[i]);
+				temp = new Triangle(x);
+			}
+			else if (dynamic_cast<Circle*> (shapesList[i]))
+			{
+				Circle* x = dynamic_cast<Circle*> (shapesList[i]);
+				temp = new Circle(x);
+			}
+			else if (dynamic_cast<Group*> (shapesList[i]))
+			{
+				Group* x = dynamic_cast<Group*> (shapesList[i]);
+				temp = new Group(x);
+			}
+			else if (dynamic_cast<IrregularPolygon*> (shapesList[i]))
+			{
+				IrregularPolygon* x = dynamic_cast<IrregularPolygon*> (shapesList[i]);
+				temp = new IrregularPolygon(x);
+			}
+			shapesList.push_back(temp);
+		}
+		y = 0;
+	}
+}
+
+
+void Graph::clear_cards()
+{
+	for (int i = 0; i < play_cards.size(); i++)
+	{
+		delete play_cards[i];
+	}
+	play_cards.clear();
+}
+
+void Graph::Start_Game()
+{
+	if (play_cards.size() == 0)
+	{
+		Dublicate();
+		Scramble_shapes_in_play();
+		vector<Point> x;
+		Point p1;
+		p1.x = 350;
+		p1.y = 170;
+		x.push_back(p1);
+		int y = 1;
+		for (int i = 0; i < shapesList.size(); i++)
+		{
+			Card* temp = new Card(shapesList[i], x[i]);
+			play_cards.push_back(temp);
+			p1.x = p1.x + 100;
+			if (x.size() / 6.0 == y)
+			{
+				y++;
+				p1.y = p1.y + 120;
+				p1.x = 350;
+			}
+			x.push_back(p1);
+		}
+	}
+}
+
+void Graph::Restart_Game()
+{
+	clear_cards();
+	Start_Game();
+}
+

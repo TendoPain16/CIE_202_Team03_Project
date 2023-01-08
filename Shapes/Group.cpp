@@ -18,6 +18,53 @@
 
 Group::Group() {}
 
+Group::Group(Group* x)
+{
+	int num = (x->groupshapesList).size();
+	for (int i = 0; i < num; i++)
+	{
+		shape* temp = x->groupshapesList[i];
+		if (dynamic_cast<Rect*> (temp))
+		{
+			Rect* x = dynamic_cast<Rect*> (temp);
+			temp = new Rect(x);
+		}
+		else if (dynamic_cast<Square*> (temp))
+		{
+			Square* x = dynamic_cast<Square*> (temp);
+			temp = new Square(x);
+		}
+		else if (dynamic_cast<Line*> (temp))
+		{
+			Line* x = dynamic_cast<Line*> (temp);
+			temp = new Line(x);
+		}
+		else if (dynamic_cast<Triangle*> (temp))
+		{
+			Triangle* x = dynamic_cast<Triangle*> (temp);
+			temp = new Triangle(x);
+		}
+		else if (dynamic_cast<Circle*> (temp))
+		{
+			Circle* x = dynamic_cast<Circle*> (temp);
+			temp = new Circle(x);
+		}
+		else if (dynamic_cast<Group*> (temp))
+		{
+			Group* x = dynamic_cast<Group*> (temp);
+			temp = new Group(x);
+		}
+		else if (dynamic_cast<IrregularPolygon*> (temp))
+		{
+			IrregularPolygon* x = dynamic_cast<IrregularPolygon*> (temp);
+			temp = new IrregularPolygon(x);
+		}
+		(this->groupshapesList).push_back(temp);
+	}
+	this->resizing = x->resizing;
+	this->ShpGfxInfo = x->ShpGfxInfo;
+	this->ID = x->ID;
+}
 
 Group::Group(vector <shape*> come, GfxInfo shapeGfxInfo) :shape(shapeGfxInfo)
 {
@@ -146,5 +193,33 @@ vector <shape*> Group::get_shapes_list()
 
 bool Group::IsPointInside(int x, int y)
 {
+	Point upper_right_corner;
+	Point bottom_left_corner;
+
+	for (int i = 0; i < groupshapesList.size(); i++)
+	{
+		if (groupshapesList[i]->IsPointInside(x,y))
+		{
+			return true;
+		}
+	}
 	return false;
+}
+
+void Group::save_shape_points()
+{
+
+}
+void Group::load_shape_points()
+{
+
+}
+bool Group::is_shape_between_two_corners(Point p1, Point p2)
+{
+	return true;
+}
+
+void Group::move_to_center(Point new_center)
+{
+
 }
